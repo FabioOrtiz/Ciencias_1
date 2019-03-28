@@ -1,0 +1,28 @@
+#cantidad_datos_recuadro{
+	padding:2px;
+	text-align: center;
+}
+
+#type_generation_recuadro{
+	padding:2px;
+	text-align: center;
+}
+
+#type_ordenation_recuadro{
+	padding:2px;
+	text-align: center;
+}
+
+#seccion_botones{
+	text-align: center;
+}
+
+#tabla_generada{
+	margin-top:20px;
+	text-align: center;
+}
+
+#cantidad_contador{
+	margin-top:20px;
+	text-align: center;
+}
