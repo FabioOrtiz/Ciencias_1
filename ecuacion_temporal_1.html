@@ -1,0 +1,170 @@
+<!--EN LOS TRES CASOS: FALTAN CONTADORES Y FORMULAS-->
+
+<html>
+	<head>
+		<title>Ecuacion Temporal </title>
+		<script>
+		var generation_array=[];
+		var table ="";
+		var new_table ="";
+		var cantidad_arreglo = "";
+		var contador = 0;
+		var num_verificate = 0;
+		var numero_datos = 0;
+		var tipo_ordenado  = "";
+		var tipo_generado = "";
+		var temporal =0;
+		
+		function create_array(){
+			contador=0;
+			generation_array=[];
+			cantidad_arreglo = document.getElementById("cantidad_datos").value;
+			tipo_generado = document.getElementById("type_generation").value;
+			tipo_ordenado = document.getElementById("type_ordenation").value;
+			
+			if (tipo_generado=="Caso_Medio"){
+				for (var i=0;i<cantidad_arreglo;i++){
+					number = Math.floor((Math.random() * (100-1))+1);
+					generation_array.push(number);
+				}
+			}
+			
+			if (tipo_generado=="Peor_Caso"){
+				if(tipo_ordenado=="falling"){
+					number=1
+					for (var i=0;i<cantidad_arreglo;i++){
+						number = number+1;
+						generation_array.push(number);
+					}
+				}
+				if(tipo_ordenado=="upward"){
+					number=100
+					for (var i=0;i<cantidad_arreglo;i++){
+						number = number-1;
+						generation_array.push(number);
+					}
+				}
+			}
+			
+			if(tipo_generado=="Mejor_Caso"){
+				if(tipo_ordenado=="falling"){
+					number=100
+					for (var i=0;i<cantidad_arreglo;i++){
+						number = number-1;
+						generation_array.push(number);
+					}
+				}
+				if(tipo_ordenado=="upward"){
+					number=1
+					for (var i=0;i<cantidad_arreglo;i++){
+						number = number+1;
+						generation_array.push(number);
+					}
+				}
+			}
+		}
+		
+		function ordenate_array(){
+			tipo_ordenado = document.getElementById("type_ordenation").value;
+			if (tipo_ordenado=="upward"){
+			contador=1;
+				for(var i=0;i<cantidad_arreglo-1 ;i++){
+				contador=contador+5;
+					for(j=i+1;j<cantidad_arreglo;j++){
+						if(generation_array[i]>generation_array[j]){
+							temporal=generation_array[i];
+							generation_array[i]=generation_array[j];
+							generation_array[j]=temporal;
+						}
+					contador=contador+12;
+					} 
+				contador=contador+1;
+				}
+			contador=contador+2;
+			}
+			
+			if (tipo_ordenado=="falling"){
+			contador=1;
+				for(var i=0;i<cantidad_arreglo-1 ;i++){
+				contador=contador+5;
+					for(j=i+1;j<cantidad_arreglo;j++){
+						if(generation_array[i]<generation_array[j]){
+							temporal=generation_array[j];
+							generation_array[j]=generation_array[i];
+							generation_array[i]=temporal;
+						}
+					contador=contador+12;  
+					} 
+				contador=contador+1;
+				}
+			contador=contador+2;	
+			}
+		}
+		
+		function generate_array(){	
+			new_table="";
+			table="";
+			for (var i=0;i<(cantidad_arreglo);i++){
+				table+=generation_array[i]+"<br>";
+			}
+			document.getElementById("tabla_generada").innerHTML = table;
+		}
+		
+		function regenerate_array(){
+			tipo_generado = document.getElementById("type_generation").value;
+			new_table="";
+			num_verificate=0;
+			for (var i=0;i<(cantidad_arreglo);i++){
+				new_table+=generation_array[i]+"<br>";
+			}
+			numero_datos = generation_array.length;
+			
+			if (tipo_generado=="Peor_Caso"){
+			num_verificate= 12*(numero_datos*(numero_datos-1)-((numero_datos/2)*(numero_datos-1)))+(6*(numero_datos-1))+3;}
+			
+			if(tipo_generado=="Caso_Medio"){
+			num_verificate= 12*(numero_datos*(numero_datos-1)-((numero_datos/2)*(numero_datos-1)))+(6*(numero_datos-1))+4;
+			}
+			
+			if(tipo_generado=="Mejor_Caso"){
+			num_verificate= 12*(numero_datos*(numero_datos-1)-((numero_datos/2)*(numero_datos-1)))+(6*(numero_datos-1))+5;
+			}
+			
+			document.getElementById("tabla_generada").innerHTML = "ORDENADA"+"<br>"+new_table+"CONTADOR"+"<br>"+contador+"<br>"+"VERIFICAR"+"<br>"+num_verificate;
+		}
+		</script>
+		<link href="estilo.css" rel="stylesheet">
+	</head>
+	<body>
+		<div id="cantidad_datos_recuadro">
+		<input type="text" size="30" placeholder="Ingresar cantidad de datos del arreglo" name="array_size" id="cantidad_datos"><br>
+		</div>
+		<br>
+		<div id="type_generation_recuadro">
+		<input type="text" size="66" placeholder="Ingresar tipo de generacion de arreglo: ej. Mejor_Caso, Caso_Medio o Peor_Caso" id="type_generation">
+		</div>
+		<br>
+		<div id="type_ordenation_recuadro">
+		<input type="text" size="65" placeholder="Digite el tipo de ordenado: ej. falling para descendente y upward para ascendente" id="type_ordenation">
+		</div>
+		<br>
+		<br>
+		<div id ="seccion_botones">
+		<button name="generate" onclick="create_array();generate_array()">
+			Generar
+		</button>
+		<br>
+		<br>
+		<button name="ordenate" onclick="ordenate_array();";>
+			Ordenar
+		</button>
+		<br>
+		<br>
+		<button name="regenerate" onclick="regenerate_array();";>
+			Mostrar
+		</button>
+		</div>
+		<div id= "tabla_generada">
+		<div id="cantidad_contador">
+	</body>
+</html>
