@@ -1,5 +1,3 @@
-<!--EN LOS TRES CASOS: FALTAN CONTADORES Y FORMULAS-->
-
 <html>
 	<head>
 		<title>Ecuacion Temporal </title>
@@ -8,15 +6,17 @@
 		var table ="";
 		var new_table ="";
 		var cantidad_arreglo = "";
-		var contador = 0;
+		var contador = 1;
 		var num_verificate = 0;
 		var numero_datos = 0;
 		var tipo_ordenado  = "";
 		var tipo_generado = "";
 		var temporal =0;
+		var first_condition=1;
+		var second_condition=1;
 		
 		function create_array(){
-			contador=0;
+			contador=1;
 			generation_array=[];
 			cantidad_arreglo = document.getElementById("cantidad_datos").value;
 			tipo_generado = document.getElementById("type_generation").value;
@@ -66,36 +66,41 @@
 		
 		function ordenate_array(){
 			tipo_ordenado = document.getElementById("type_ordenation").value;
+			
 			if (tipo_ordenado=="upward"){
-			contador=1;
 				for(var i=0;i<cantidad_arreglo-1 ;i++){
-				contador=contador+5;
 					for(j=i+1;j<cantidad_arreglo;j++){
 						if(generation_array[i]>generation_array[j]){
 							temporal=generation_array[i];
 							generation_array[i]=generation_array[j];
 							generation_array[j]=temporal;
+							first_condition=2
 						}
-					contador=contador+12;
-					} 
-				contador=contador+1;
+					if(first_condition==2){
+						contador=contador+7 ;
+						first_condition=1}
+					contador=contador+5;
+					}
+				contador=contador+6;	
 				}
 			contador=contador+2;
 			}
 			
 			if (tipo_ordenado=="falling"){
-			contador=1;
 				for(var i=0;i<cantidad_arreglo-1 ;i++){
-				contador=contador+5;
 					for(j=i+1;j<cantidad_arreglo;j++){
 						if(generation_array[i]<generation_array[j]){
 							temporal=generation_array[j];
 							generation_array[j]=generation_array[i];
 							generation_array[i]=temporal;
+							first_condition=2;
 						}
-					contador=contador+12;  
+					if(first_condition==2){
+						contador=contador+7 ;
+						first_condition=1}
+					contador=contador+5;  
 					} 
-				contador=contador+1;
+				contador=contador+6;
 				}
 			contador=contador+2;	
 			}
@@ -123,11 +128,11 @@
 			num_verificate= 12*(numero_datos*(numero_datos-1)-((numero_datos/2)*(numero_datos-1)))+(6*(numero_datos-1))+3;}
 			
 			if(tipo_generado=="Caso_Medio"){
-			num_verificate= 12*(numero_datos*(numero_datos-1)-((numero_datos/2)*(numero_datos-1)))+(6*(numero_datos-1))+4;
+			num_verificate= (17*(numero_datos*numero_datos)+7*(numero_datos)-12)/4;
 			}
 			
 			if(tipo_generado=="Mejor_Caso"){
-			num_verificate= 12*(numero_datos*(numero_datos-1)-((numero_datos/2)*(numero_datos-1)))+(6*(numero_datos-1))+5;
+			num_verificate= (5*(numero_datos*numero_datos)+7*(numero_datos)-6)/2;
 			}
 			
 			document.getElementById("tabla_generada").innerHTML = "ORDENADA"+"<br>"+new_table+"CONTADOR"+"<br>"+contador+"<br>"+"VERIFICAR"+"<br>"+num_verificate;
