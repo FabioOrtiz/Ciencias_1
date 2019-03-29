@@ -1,0 +1,105 @@
+<html>
+	<head>
+		<title>Ecuacion Temporal </title>
+		<script>
+		var iterador=0;
+		var generation_array=[];
+		var contador_array=[];
+		var dato=0;
+		var first_condition=1;
+		
+		function create_array(){
+			contador=1;
+			generation_array=[];
+			cantidad_de_arreglos = document.getElementById("cantidad_datos").value;
+			
+			for(iterador=2;iterador<cantidad_de_arreglos;iterador++){
+				for (var i=0;i<iterador;i++){
+						number = Math.floor((Math.random() * (1000-1))+1);
+						generation_array.push(number);
+					}
+				dato=ordenate_array(generation_array, iterador);
+				contador_array.push(dato);
+			}
+		}
+		
+		function ordenate_array(generation_array, iterador){
+			tipo_ordenado = document.getElementById("type_ordenation").value;
+			
+			if (tipo_ordenado=="upward"){
+				for(var i=0;i<iterador-1 ;i++){
+					for(j=i+1;j<iterador;j++){
+						if(generation_array[i]>generation_array[j]){
+							temporal=generation_array[i];
+							generation_array[i]=generation_array[j];
+							generation_array[j]=temporal;
+							first_condition=2
+						}
+					if(first_condition==2){
+						contador=contador+7 ;
+						first_condition=1}
+					contador=contador+5;
+					}
+				contador=contador+6;	
+				}
+			contador=contador+2;
+			}
+			
+			if (tipo_ordenado=="falling"){
+				for(var i=0;i<iterador-1 ;i++){
+					for(j=i+1;j<iterador;j++){
+						if(generation_array[i]<generation_array[j]){
+							temporal=generation_array[j];
+							generation_array[j]=generation_array[i];
+							generation_array[i]=temporal;
+							first_condition=2;
+						}
+					if(first_condition==2){
+						contador=contador+7 ;
+						first_condition=1}
+					contador=contador+5;  
+					} 
+				contador=contador+6;
+				}
+			contador=contador+2;	
+			}
+			return contador;
+		}
+		
+		function draw(){
+			new_table="";
+			table="";
+			
+			for (var i=0;i<(contador_array.length);i++){
+				table+=contador_array[i]+"<br>";
+			}
+			document.getElementById("tabla_generada").innerHTML = table;
+		
+		}
+		
+		</script>
+		<link href="estilo.css" rel="stylesheet">
+	</head>
+	<body>
+		<div id="cantidad_datos_recuadro">
+		<input type="text" size="30" placeholder="Ingresar cantidad de datos del arreglo" name="array_size" id="cantidad_datos"><br>
+		</div>
+		<br>
+		<div id="type_ordenation_recuadro">
+		<input type="text" size="65" placeholder="Digite el tipo de ordenado: ej. falling para descendente y upward para ascendente" id="type_ordenation">
+		</div>
+		<br>
+		<br>
+		<div id ="seccion_botones">
+		<button name="generate" onclick="create_array();";>
+			Generar
+		</button>
+		<br>
+		<br>
+		<button name="draw" onclick="draw_array();";>
+			Dibujar
+		</button>
+		</div>
+		<div id= "tabla_generada">
+	</body>
+</html>
