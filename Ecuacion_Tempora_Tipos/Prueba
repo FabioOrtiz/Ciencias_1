@@ -11,11 +11,9 @@
 		var numero_datos = 0;
 		var tipo_ordenado  = "";
 		var tipo_generado = "";
-		var tipo_clase_ordenado ="" ;
 		var temporal =0;
 		var first_condition=1;
-		var second_condition=1;
-		var menor=0;
+		var segundo_temporal=0;
 		
 		function create_array(){
 			contador=1;
@@ -70,7 +68,7 @@
 			tipo_ordenado = document.getElementById("type_ordenation").value;
 			tipo_clase_ordenado = document.getElementById("tipo_de_ordenados").value;
 			
-			if(tipo_clase_ordenado=="Burbuja"){	
+			if(tipo_clase_ordenado=="Burbuja"){
 				if (tipo_ordenado=="upward"){
 					for(var i=0;i<cantidad_arreglo-1 ;i++){
 						for(j=i+1;j<cantidad_arreglo;j++){
@@ -100,7 +98,7 @@
 								first_condition=2;
 							}
 						if(first_condition==2){
-							contador=contador+7;
+							contador=contador+7 ;
 							first_condition=1}
 						contador=contador+5;  
 						} 
@@ -112,51 +110,68 @@
 			
 			if(tipo_clase_ordenado=="Seleccion"){
 				if (tipo_ordenado=="upward"){ 
-				for (var i=0; i<generation_array.length - 1;i++){
-					menor = i
-					for (j=i+1; j<generation_array.length; j++){
-						if (generation_array[j] < generation_array[menor]){
-							menor = j;
+					for (var i=0; i<cantidad_arreglo-1;i++){
+						menor = i
+						for (j=i+1; j<cantidad_arreglo; j++){
+							if (generation_array[j] < generation_array[menor]){
+								menor = j;
+								first_condition=2;}
+							if(first_condition==2){
+								contador=contador+1;
+								first_condition=1;}
+							contador=contador+5;}
+						if (i != menor){
+							temporal= generation_array[i];
+							generation_array[i] = generation_array[menor];
+							generation_array[menor] = temporal;
 							first_condition=2;}
 						if(first_condition==2){
-							contador=contador+1;
-							first_condition=1;}
-						contador=contador+5;}
-					if (i != menor){
-						temporal= generation_array[i];
-						generation_array[i] = generation_array[menor];
-						generation_array[menor] = temporal;
-						first_condition=2;}
-					if(first_condition==2){
-						contador=contador+7;}
-					contador=contador+8;}
+							contador=contador+7;}
+						contador=contador+8;}
 				}
+				
 				if (tipo_ordenado=="falling"){
-				for (var i = 0; i < generation_array.length - 1; i++){
-					menor = i
-					for (var j = i + 1; j < generation_array.length; j++){
-						if (generation_array[j] > generation_array[menor]){
-							menor = j;
-						}			
+					for (var i = 0; i < cantidad_arreglo-1; i++){
+						menor = i
+						for (var j = i + 1; j < generation_array.length; j++){
+							if (generation_array[j] > generation_array[menor]){
+								menor = j;
+							}			
+						}
+						if (i != menor){
+							temporal= generation_array[i];
+							generation_array[i] = generation_array[menor];
+							generation_array[menor] = temporal;
+						}
 					}
-					if (i != menor){
-						temporal= generation_array[i];
-						generation_array[i] = generation_array[menor];
-						generation_array[menor] = temporal;
-					}
-				}
 				}
 			}
 			
 			if(tipo_clase_ordenado=="Insercion"){
-				for (var i=1; i < generation_array.lenght; i++) {
-				temporal = generation_array[i];
-					for (var j = i; j > 0 && generation_array[j - 1] > actual; j--) {
-					generation_array[j] = generation_array[j - 1];
+				if (tipo_ordenado=="upward"){ 
+					for (var i=1; i < cantidad_arreglo; i++) {
+						temporal = generation_array[i];
+						segundo_temporal = i-1;
+					while (segundo_temporal >= 0 && generation_array[segundo_temporal] > temporal) {
+						generation_array[segundo_temporal + 1] = generation_array[segundo_temporal];
+						segundo_temporal--;
 					}
-				generation_array[j] = temporal;
+					generation_array[segundo_temporal+1] = temporal;
+					}
+				}
+				if(tipo_ordenado=="falling"){
+					for (var i=1; i < cantidad_arreglo; i++) {
+						temporal = generation_array[i];
+						segundo_temporal = i-1;
+					while (segundo_temporal >= 0 && generation_array[segundo_temporal] > temporal) {
+						generation_array[segundo_temporal + 1] = generation_array[segundo_temporal];
+						segundo_temporal--;
+					}
+					generation_array[segundo_temporal+1] = temporal;
+					}
 				}
 			}
+			
 		}
 		
 		function generate_array(){	
@@ -170,34 +185,24 @@
 		
 		function regenerate_array(){
 			tipo_generado = document.getElementById("type_generation").value;
+			tipo_clase_ordenado = document.getElementById("tipo_de_ordenados").value;
+			
 			new_table="";
 			num_verificate=0;
-			tipo_clase_ordenado = document.getElementById("tipo_de_ordenados").value;
 			for (var i=0;i<(cantidad_arreglo);i++){
 				new_table+=generation_array[i]+"<br>";
 			}
 			numero_datos = generation_array.length;
 			
-			if(tipo_clase_ordenado="Seleccion"){
-				if (tipo_generado=="Peor_Caso"){
-				num_verificate= 10;}
-				
-				if(tipo_generado=="Caso_Medio"){
-				num_verificate= 11;}
-				
-				if(tipo_generado=="Mejor_Caso"){
-				num_verificate= 12;}
+			if (tipo_generado=="Peor_Caso"){
+			num_verificate= 12*(numero_datos*(numero_datos-1)-((numero_datos/2)*(numero_datos-1)))+(6*(numero_datos-1))+3;}
+			
+			if(tipo_generado=="Caso_Medio"){
+			num_verificate= (17*(numero_datos*numero_datos)+7*(numero_datos)-12)/4;
 			}
 			
-			if (tipo_clase_ordenado=="Burbuja"){
-				if (tipo_generado=="Peor_Caso"){
-				num_verificate= 12*(numero_datos*(numero_datos-1)-((numero_datos/2)*(numero_datos-1)))+(6*(numero_datos-1))+3;}
-				
-				if(tipo_generado=="Caso_Medio"){
-				num_verificate= (17*(numero_datos*numero_datos)+7*(numero_datos)-12)/4;}
-				
-				if(tipo_generado=="Mejor_Caso"){
-				num_verificate= (5*(numero_datos*numero_datos)+7*(numero_datos)-6)/2;}
+			if(tipo_generado=="Mejor_Caso"){
+			num_verificate= (5*(numero_datos*numero_datos)+7*(numero_datos)-6)/2;
 			}
 			
 			document.getElementById("tabla_generada").innerHTML = "ORDENADA"+"<br>"+new_table+"CONTADOR"+"<br>"+contador+"<br>"+"VERIFICAR"+"<br>"+num_verificate+"<br>"+tipo_clase_ordenado;
@@ -211,7 +216,7 @@
 		</div>
 		<br>
 		<div id="tipo_ordenado_casos">
-		<input type="text" size="65" placeholder="Ingresar tipo de ordenamiento para el arreglo: Ej. Burbuja, Seleccion, Insertacion" name="array_size" id="tipo_de_ordenados"><br>
+		<input type="text" size="65" placeholder="Ingresar tipo de ordenamiento para el arreglo: Ej. Burbuja, Seleccion, Insercion" name="array_size" id="tipo_de_ordenados"><br>
 		</div>
 		<br>
 		<div id="type_generation_recuadro">
