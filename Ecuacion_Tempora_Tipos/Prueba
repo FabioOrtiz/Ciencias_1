@@ -14,6 +14,7 @@
 		var temporal =0;
 		var first_condition=1;
 		var segundo_temporal=0;
+		var posicion =0;
 		
 		function create_array(){
 			contador=1;
@@ -110,25 +111,25 @@
 			
 			if(tipo_clase_ordenado=="Seleccion"){
 				if (tipo_ordenado=="upward"){
-					for (var i=0; i<cantidad_arreglo-1;i++){
-						contador=contador+6;
-						menor = i
-						for (j=i+1; j<cantidad_arreglo; j++)
-						{
-							contador=contador+5;
-							if (generation_array[j] < generation_array[menor]){
-								contador=contador+1;
-								menor = j;
+					for(i=0;i<cantidad_arreglo-1;i++){
+						temporal=generation_array[i+1];
+						posicion=i+1;
+						for(j=i+1;j<cantidad_arreglo;j++){
+							if(temporal>generation_array[j]){
+								temporal=generation_array[j];
+								posicion=j;
+								contador=contador+3;
 							}
-							if (i != menor){
-								contador=contador+7;
-								temporal= generation_array[i];
-								generation_array[i] = generation_array[menor];
-								generation_array[menor] = temporal;
-							}
-						}
 					}
-					contador=contador+2;
+					if(temporal<generation_array[i]){
+						temporal=generation_array[i]; 
+						generation_array[i]=generation_array[posicion];
+						generation_array[posicion]=temporal;
+						contador=contador+7;
+					}
+					contador=contador+12;
+				}
+				contador=contador+10;
 				}
 				
 				if (tipo_ordenado=="falling"){
@@ -169,6 +170,7 @@
 					}
 					contador=contador+3;
 				}
+				
 				if(tipo_ordenado=="falling"){
 					for (var i=1; i < cantidad_arreglo; i++) {
 						temporal = generation_array[i];
@@ -222,7 +224,8 @@
 			
 			if (tipo_clase_ordenado=="Seleccion"){
 				if (tipo_generado=="Peor_Caso"){
-				num_verificate= 59}
+				num_verificate= 59;
+				}
 				
 				if(tipo_generado=="Caso_Medio"){
 				num_verificate= 58;
@@ -234,21 +237,22 @@
 			}
 			
 			if (tipo_clase_ordenado=="Insercion"){
-			if (tipo_generado=="Peor_Caso"){
-				num_verificate= 8*(numero_datos/2*(numero_datos+1)-numero_datos)+12*(numero_datos-1)+4;}
+				if (tipo_generado=="Peor_Caso"){
+				num_verificate= 8*(numero_datos/2*(numero_datos+1)-numero_datos)+12*(numero_datos-1)+4;
+				}
 	
 				if(tipo_generado=="Caso_Medio"){
-				num_verificate= 38;
+				num_verificate= 2+13*(numero_datos-1)+4.5*(numero_datos*((numero_datos-1)/2));
 				}
 				
 				if(tipo_generado=="Mejor_Caso"){
-				num_verificate= 37;
+				num_verificate= (2*(numero_datos))+(10*(numero_datos-1))+2;
 				}
 			}
 			document.getElementById("tabla_generada").innerHTML = "ORDENADA"+"<br>"+new_table+"CONTADOR"+"<br>"+contador+"<br>"+"VERIFICAR"+"<br>"+num_verificate+"<br>"+tipo_clase_ordenado;
 		}
 		</script>
-		<link href="estilo.css" rel="stylesheet">
+		<link href="estilos.css" rel="stylesheet">
 	</head>
 	<body>
 		<div id="cantidad_datos_recuadro">
