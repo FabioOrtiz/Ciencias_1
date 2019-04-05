@@ -109,41 +109,48 @@
 			}
 			
 			if(tipo_clase_ordenado=="Seleccion"){
-				if (tipo_ordenado=="upward"){ 
+				if (tipo_ordenado=="upward"){
 					for (var i=0; i<cantidad_arreglo-1;i++){
+						contador=contador+6;
 						menor = i
-						for (j=i+1; j<cantidad_arreglo; j++){
+						for (j=i+1; j<cantidad_arreglo; j++)
+						{
+							contador=contador+5;
 							if (generation_array[j] < generation_array[menor]){
-								menor = j;
-								first_condition=2;}
-							if(first_condition==2){
 								contador=contador+1;
-								first_condition=1;}
-							contador=contador+5;}
-						if (i != menor){
-							temporal= generation_array[i];
-							generation_array[i] = generation_array[menor];
-							generation_array[menor] = temporal;
-							first_condition=2;}
-						if(first_condition==2){
-							contador=contador+7;}
-						contador=contador+8;}
+								menor = j;
+							}
+							if (i != menor){
+								contador=contador+7;
+								temporal= generation_array[i];
+								generation_array[i] = generation_array[menor];
+								generation_array[menor] = temporal;
+							}
+						}
+					}
+					contador=contador+2;
 				}
 				
 				if (tipo_ordenado=="falling"){
 					for (var i = 0; i < cantidad_arreglo-1; i++){
+						contador=contador+6;
 						menor = i
-						for (var j = i + 1; j < generation_array.length; j++){
+						for (j=i+1; j<cantidad_arreglo; j++)
+						{
+							contador=contador+5;
 							if (generation_array[j] > generation_array[menor]){
+								contador=contador+1;
 								menor = j;
 							}			
 						}
 						if (i != menor){
+							contador=contador+7;
 							temporal= generation_array[i];
 							generation_array[i] = generation_array[menor];
 							generation_array[menor] = temporal;
 						}
 					}
+					contador=contador+2;
 				}
 			}
 			
@@ -152,23 +159,29 @@
 					for (var i=1; i < cantidad_arreglo; i++) {
 						temporal = generation_array[i];
 						segundo_temporal = i-1;
-					while (segundo_temporal >= 0 && generation_array[segundo_temporal] > temporal) {
-						generation_array[segundo_temporal + 1] = generation_array[segundo_temporal];
-						segundo_temporal--;
+						while (segundo_temporal >= 0 && generation_array[segundo_temporal] > temporal) {
+							generation_array[segundo_temporal + 1] = generation_array[segundo_temporal];
+							segundo_temporal--;
+							contador=contador+8;
+						}
+						generation_array[segundo_temporal+1] = temporal;
+						contador=contador+12;
 					}
-					generation_array[segundo_temporal+1] = temporal;
-					}
+					contador=contador+3;
 				}
 				if(tipo_ordenado=="falling"){
 					for (var i=1; i < cantidad_arreglo; i++) {
 						temporal = generation_array[i];
 						segundo_temporal = i-1;
-					while (segundo_temporal >= 0 && generation_array[segundo_temporal] > temporal) {
-						generation_array[segundo_temporal + 1] = generation_array[segundo_temporal];
-						segundo_temporal--;
+						while (segundo_temporal >= 0 && generation_array[segundo_temporal] > temporal) {
+							generation_array[segundo_temporal + 1] = generation_array[segundo_temporal];
+							segundo_temporal--;
+							contador=contador+8;
+						}
+						generation_array[segundo_temporal+1] = temporal;
+						contador=contador+12;
 					}
-					generation_array[segundo_temporal+1] = temporal;
-					}
+					contador=contador+3;
 				}
 			}
 			
@@ -194,17 +207,44 @@
 			}
 			numero_datos = generation_array.length;
 			
+			if (tipo_clase_ordenado=="Burbuja"){
+				if (tipo_generado=="Peor_Caso"){
+				num_verificate= 12*(numero_datos*(numero_datos-1)-((numero_datos/2)*(numero_datos-1)))+(6*(numero_datos-1))+3;}
+				
+				if(tipo_generado=="Caso_Medio"){
+				num_verificate= (17*(numero_datos*numero_datos)+7*(numero_datos)-12)/4;
+				}
+				
+				if(tipo_generado=="Mejor_Caso"){
+				num_verificate= (5*(numero_datos*numero_datos)+7*(numero_datos)-6)/2;
+				}
+			}
+			
+			if (tipo_clase_ordenado=="Seleccion"){
+				if (tipo_generado=="Peor_Caso"){
+				num_verificate= 59}
+				
+				if(tipo_generado=="Caso_Medio"){
+				num_verificate= 58;
+				}
+				
+				if(tipo_generado=="Mejor_Caso"){
+				num_verificate= 57;
+				}
+			}
+			
+			if (tipo_clase_ordenado=="Insercion"){
 			if (tipo_generado=="Peor_Caso"){
-			num_verificate= 12*(numero_datos*(numero_datos-1)-((numero_datos/2)*(numero_datos-1)))+(6*(numero_datos-1))+3;}
-			
-			if(tipo_generado=="Caso_Medio"){
-			num_verificate= (17*(numero_datos*numero_datos)+7*(numero_datos)-12)/4;
+				num_verificate= 8*(numero_datos/2*(numero_datos+1)-numero_datos)+12*(numero_datos-1)+4;}
+	
+				if(tipo_generado=="Caso_Medio"){
+				num_verificate= 38;
+				}
+				
+				if(tipo_generado=="Mejor_Caso"){
+				num_verificate= 37;
+				}
 			}
-			
-			if(tipo_generado=="Mejor_Caso"){
-			num_verificate= (5*(numero_datos*numero_datos)+7*(numero_datos)-6)/2;
-			}
-			
 			document.getElementById("tabla_generada").innerHTML = "ORDENADA"+"<br>"+new_table+"CONTADOR"+"<br>"+contador+"<br>"+"VERIFICAR"+"<br>"+num_verificate+"<br>"+tipo_clase_ordenado;
 		}
 		</script>
