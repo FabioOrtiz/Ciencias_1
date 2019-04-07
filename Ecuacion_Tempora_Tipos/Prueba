@@ -113,47 +113,50 @@
 				contador=0;
 				if (tipo_ordenado=="upward")
 				{
-					for (var i = 0; i < (cantidad_arreglo-1); i++) 
+					contador=3;
+					for(var i=0 ;i<cantidad_arreglo-1 ; i++)
 					{
+						contador=contador+6;
 						temporal = i;
-						temporal_valor = generation_array[i];
-						for (j = i + 1; j < cantidad_arreglo; j++)
+						for(var j=i+1 ; j<cantidad_arreglo; j++)
 						{
-							if (generation_array[j] < temporal_valor) 
-							{
-								temporal_valor = generation_array[j];
-								temporal = j;
-								contador=contador+1;
-							}
-							contador=contador+2;
+							contador=contador+5;
+							if (generation_array[temporal] > generation_array[j]) temporal = j;
+                
 						}
-						generation_array[temporal] = generation_array[i];  
-						generation_array[i] = temporal_valor;
-						contador=contador+9;
+						contador=contador+1;
+						if(generation_array[i]>generation_array[temporal])
+						{
+							segundo_temporal = generation_array[temporal];
+							generation_array[temporal] = generation_array[i];
+							generation_array[i] = segundo_temporal;
+							contador=contador+7;
+						}
+						contador=contador+3; 
 					}
-					contador=contador+11;
 				}
 				
 				if (tipo_ordenado=="falling"){
-					for (var i = 0; i < cantidad_arreglo-1; i++){
+					contador=3;
+					for(var i=0 ;i<cantidad_arreglo-1 ; i++)
+					{
 						contador=contador+6;
-						menor = i
-						for (j=i+1; j<cantidad_arreglo; j++)
+						temporal = i;
+						for(var j=i+1 ; j<cantidad_arreglo; j++)
 						{
 							contador=contador+5;
-							if (generation_array[j] > generation_array[menor]){
-								contador=contador+1;
-								menor = j;
-							}			
+							if (generation_array[temporal] > generation_array[j]) temporal = j;
 						}
-						if (i != menor){
+						contador=contador+1;
+						if(generation_array[i]<generation_array[temporal])
+						{
 							contador=contador+7;
 							temporal= generation_array[i];
 							generation_array[i] = generation_array[menor];
 							generation_array[menor] = temporal;
 						}
 					}
-					contador=contador+2;
+					contador=contador+3;
 				}
 			}
 			
@@ -230,11 +233,11 @@
 				}
 				
 				if(tipo_generado=="Caso_Medio"){
-				num_verificate= 58;
+				num_verificate= 5.5*(numero_datos*(numero_datos-1)-(numero_datos-1)-(((numero_datos-1)*(numero_datos-2)))/2)+(11.5*(numero_datos-1))+3;
 				}
 				
 				if(tipo_generado=="Mejor_Caso"){
-				num_verificate= 57;
+				num_verificate= 5*(numero_datos*(numero_datos-1)-(numero_datos-1)-(((numero_datos-1)*(numero_datos-2)))/2)+(10*(numero_datos-1))+3;;
 				}
 			}
 			
