@@ -110,26 +110,28 @@
 			}
 			
 			if(tipo_clase_ordenado=="Seleccion"){
-				if (tipo_ordenado=="upward"){
-					for(i=0;i<cantidad_arreglo-1;i++){
-						temporal=generation_array[i+1];
-						posicion=i+1;
-						for(j=i+1;j<cantidad_arreglo;j++){
-							if(temporal>generation_array[j]){
-								temporal=generation_array[j];
-								posicion=j;
-								contador=contador+3;
+				contador=0;
+				if (tipo_ordenado=="upward")
+				{
+					for (var i = 0; i < (cantidad_arreglo-1); i++) 
+					{
+						temporal = i;
+						temporal_valor = generation_array[i];
+						for (j = i + 1; j < cantidad_arreglo; j++)
+						{
+							if (generation_array[j] < temporal_valor) 
+							{
+								temporal_valor = generation_array[j];
+								temporal = j;
+								contador=contador+1;
 							}
+							contador=contador+2;
+						}
+						generation_array[temporal] = generation_array[i];  
+						generation_array[i] = temporal_valor;
+						contador=contador+9;
 					}
-					if(temporal<generation_array[i]){
-						temporal=generation_array[i]; 
-						generation_array[i]=generation_array[posicion];
-						generation_array[posicion]=temporal;
-						contador=contador+7;
-					}
-					contador=contador+12;
-				}
-				contador=contador+10;
+					contador=contador+11;
 				}
 				
 				if (tipo_ordenado=="falling"){
@@ -252,7 +254,7 @@
 			document.getElementById("tabla_generada").innerHTML = "ORDENADA"+"<br>"+new_table+"CONTADOR"+"<br>"+contador+"<br>"+"VERIFICAR"+"<br>"+num_verificate+"<br>"+tipo_clase_ordenado;
 		}
 		</script>
-		<link href="estilos.css" rel="stylesheet">
+		<link href="estilo.css" rel="stylesheet">
 	</head>
 	<body>
 		<div id="cantidad_datos_recuadro">
