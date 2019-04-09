@@ -1,0 +1,51 @@
+<html>
+	<head>
+	<style>
+		table, td {
+			border: 1px solid black;
+		}
+	</style>
+	<script>
+	function crear_matriz()
+	{
+		var cantidad_datos=document.getElementById("dato");
+		var cantidad_datos_matriz= cantidad_datos.value;
+		var ancho = Math.pow(cantidad_datos_matriz, 0.5);
+		
+		var table = document.getElementById("Matriz"); 
+		
+		for (var i=0;i<ancho;i++)
+		{
+			var row = table.insertRow(i);
+			for(var j=0;j<ancho;j++)
+			{
+				var cell1 = row.insertCell(j);
+				cell1.innerHTML = '<input type="text">';
+			}
+		}
+	}
+	</script>
+	</head>
+	<body>
+	
+	<input type="text" size="30" placeholder="Ingresar dato del arreglo" name="array_size" id="dato">
+	
+	<br>
+	
+	<button onclick="crear_matriz()">Crear</button>		
+	
+	<table id="Matriz">
+	</table>
+	
+	<br>
+	<table id="datos_ingresados">
+	</table>
+	
+	<button onclick="dibujar_matriz()">Dibujar</button>
+	
+	<br>
+	<button onclick="calcular_determinante(); redibujar_matriz()">Calcular</button>
+	
+	
+	</body>
+</html>
