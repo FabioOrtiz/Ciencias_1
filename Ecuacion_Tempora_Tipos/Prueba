@@ -15,6 +15,7 @@
 		var first_condition=1;
 		var segundo_temporal=0;
 		var posicion =0;
+		var nueva_posicion=0;
 		
 		function create_array(){
 			contador=1;
@@ -113,27 +114,25 @@
 				contador=0;
 				if (tipo_ordenado=="upward")
 				{
-					contador=3;
-					for(var i=0 ;i<cantidad_arreglo-1 ; i++)
+					for (var i = 0; i < (cantidad_arreglo-1); i++) 
 					{
-						contador=contador+6;
 						temporal = i;
-						for(var j=i+1 ; j<cantidad_arreglo; j++)
+						temporal_valor = generation_array[i];
+						for (j = i + 1; j < cantidad_arreglo; j++)
 						{
-							contador=contador+5;
-							if (generation_array[temporal] > generation_array[j]) temporal = j;
-                
+							if (generation_array[j] < temporal_valor) 
+							{
+								temporal_valor = generation_array[j];
+								temporal = j;
+								contador=contador+1;
+							}
+							contador=contador+2;
 						}
-						contador=contador+1;
-						if(generation_array[i]>generation_array[temporal])
-						{
-							segundo_temporal = generation_array[temporal];
-							generation_array[temporal] = generation_array[i];
-							generation_array[i] = segundo_temporal;
-							contador=contador+7;
-						}
-						contador=contador+3; 
+						generation_array[temporal] = generation_array[i];  
+						generation_array[i] = temporal_valor;
+						contador=contador+9;
 					}
+					contador=contador+11;
 				}
 				
 				if (tipo_ordenado=="falling"){
@@ -254,7 +253,7 @@
 				num_verificate= (2*(numero_datos))+(10*(numero_datos-1))+2;
 				}
 			}
-			document.getElementById("tabla_generada").innerHTML = "ORDENADA"+"<br>"+new_table+"CONTADOR"+"<br>"+contador+"<br>"+"VERIFICAR"+"<br>"+num_verificate+"<br>"+tipo_clase_ordenado;
+			document.getElementById("tabla_generada").innerHTML = "ORDENADA"+"<br>"+new_table+"CONTADOR"+"<br>"+contador+"<br>"+"VERIFICAR"+"<br>"+num_verificate+"<br>"+tipo_clase_ordenado+"<br>"+"Nueva_Posicion"+"<br>"+nueva_posicion;
 		}
 		</script>
 		<link href="estilo.css" rel="stylesheet">
