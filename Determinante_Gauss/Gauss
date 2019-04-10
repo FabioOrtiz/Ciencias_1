@@ -6,23 +6,52 @@
 		}
 	</style>
 	<script>
+	var cantidad_datos_matriz= 0;
+	var ancho = 0;
+	var datos_matriz =[];
+	var dato="";		
+	var table = document.getElementById("Matriz");
+	
 	function crear_matriz()
 	{
 		var cantidad_datos=document.getElementById("dato");
-		var cantidad_datos_matriz= cantidad_datos.value;
-		var ancho = Math.pow(cantidad_datos_matriz, 0.5);
+		cantidad_datos_matriz= cantidad_datos.value;
+		ancho = Math.pow(cantidad_datos_matriz, 0.5);
+		var datos_matriz =[];
+		var dato=0;
 		
-		var table = document.getElementById("Matriz"); 
+		table = document.getElementById("Matriz");
 		
 		for (var i=0;i<ancho;i++)
 		{
 			var row = table.insertRow(i);
 			for(var j=0;j<ancho;j++)
 			{
-				var cell1 = row.insertCell(j);
-				cell1.innerHTML = '<input type="text">';
+				var cel1 = row.insertCell(j);
+				cel1.innerHTML = '<input type="text">';
 			}
 		}
+	}
+	
+	function leer_matriz()
+	{
+		for (var i=0;i<ancho;i++)
+		{
+			for(var j=0;j<ancho;j++)
+			{
+				dato = table.rows[i].cells[j].innerHTML;
+				datos_matriz.push(dato);
+			}
+		}
+	}
+	
+	function escribir_matriz()
+	{
+		var tabla = "";
+		for (var i=0;i<(cantidad_datos_matriz);i++){
+			tabla+=datos_matriz[i]+"<br>";
+		}
+		document.getElementById("datos_ingresados").innerHTML = tabla;
 	}
 	</script>
 	</head>
@@ -44,7 +73,10 @@
 	<button onclick="dibujar_matriz()">Dibujar</button>
 	
 	<br>
-	<button onclick="calcular_determinante(); redibujar_matriz()">Calcular</button>
+	<button onclick="leer_matriz()">Calcular</button>
+	
+	<br>
+	<button onclick="escribir_matriz()">Mostrar</button>
 	
 	
 	</body>
