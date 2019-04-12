@@ -1,17 +1,18 @@
-
+<html>
 	<head>
 	<script>
 	var datos_matriz=[];
 	var datos_matriz_leida=[];
+	var datos_matriz_definitiva=[];
 	var matriz_digitada = "";
 	var espacio ="";
 	var cantidad_datos=0;
+	var determinante=0;
 	var ancho=0;
-	var multiplicador=0;
-	var dato=0;
-	var dividendo=0;
+	var temporal=0;
 	
 	function leer_matriz(){
+		console.log("Pre_Existo");
 		matriz_digitada= document.getElementById("matriz").value;
 		datos_matriz= matriz_digitada.split(espacio);
 	}
@@ -21,53 +22,81 @@
 		{
 			document.write(datos_matriz_leida[i]);
 		}
-		document.write("<br>","DATO 0: ", datos_matriz_leida[0+ancho]);
+		document.write("Determinante: ", determinante);
 	}
 	
 	function guardar_matriz(){
+		console.log("Existo");
 		for (var i=0; i < datos_matriz.length; i++)
 		{
 			var dato = parseInt(datos_matriz[i], 10);
-			
-			if(datos_matriz[i]!=" "){
+			if(datos_matriz[i]!=" ")
+			{
 				datos_matriz_leida.push(dato);
 				cantidad_datos=cantidad_datos+1;
 			}
 		}
 	}
 	
-	function calcular_matriz(){
+	function dividir_Matriz(datos_matriz_leida){
+        ancho=Math.pow(cantidad_datos, 0.5);
+		var p_temporal=0;
+		var corte= ancho;
+		
+		for (i = 0; i < ancho ; i++){
+			datos_matriz_definitiva[i]=  datos_matriz_leida.splice(p_temporal, corte);
+			p_temporal=p_temporal+corte;
+			corte=corte+corte;
+		} 
+        return datos_matriz_definitiva;
+    }
+	
+	function createMatriz(size){
+		var matriz = new Array(size);
+		for (i = 0; i < size ; i++)
+		{ 
+		  matriz[i]=new Array(size); 
+		} 
+		return matriz;
+    }
+	
+	function calcular_matriz(datos_matriz_leida){
 		ancho=Math.pow(cantidad_datos, 0.5);
-		console.log("Cantidad Datos: ", cantidad_datos, " ANCHO: ", ancho);
 		
-		if(datos_matriz_leida[0]!=1)
+		if (ancho==2){
+			determinante=(datos_matriz_leida[0]*datos_matriz_leida[3])-(datos_matriz_leida[1]*datos_matriz_leida[2]);
+		}
+		else
 		{
-			dividendo = datos_matriz_leida[0];
-			for (var i=0;i<ancho;i++)
+			for(var i = 0; i<ancho; i++)
 			{
-				datos_matriz_leida[i]=datos_matriz_leida[i]/dividendo;
-			}			
-		}
-		
-		for (var i=0;i<ancho;i++){
-			if(datos_matriz_leida[i]+datos_matriz_leida[i+ancho]!=0)
-			{
-				multiplicador=datos_matriz_leida[0+ancho]*-1;
+				var nueva_matriz = dividir_Matriz(ancho-1);
+				for(var j=0; j<ancho; j++)
+				{
+					if(j!=i)
+					{
+						for(var k=1; k<ancho; k++)
+						{
+							temporal=-1;
+							if(j<i)
+								temporal=j;
+							else if(j>i)
+								temporal=j-1;
+							nueva_matriz[temporal][k-1] = datos_matriz_leida[j][k];
+						}
+					}
+				}
+				if(i%2==0)
+				{ 
+						determinante += datos_matriz_leida[i][0] * calcular_matriz(nueva_matriz);                            
+				}                            
+				else
+				{                            
+					determinante -= datos_matriz_leida[i][0] * calcular_matriz(nueva_matriz);
+				}                        
 			}
-			
-			for (var j=0;j<ancho;j++)
-			{
-				datos_matriz_leida[ancho+0]=(datos_matriz_leida[i]*multiplicador)+datos_matriz_leida[ancho+0];
-				console.log("LEIDA: ", datos_matriz_leida[ancho+0]);
-			}
 		}
-		
-		console.log("MULTIPLICADOR: ", multiplicador);
-		console.log("DATO 0: ", datos_matriz_leida[0]);
-		console.log("DATO 1: ", datos_matriz_leida[1]);
-		console.log("DATO 2: ", datos_matriz_leida[ancho+0]);
-		console.log("DATO 3: ", datos_matriz_leida[3]);
-		
+		console.log("Determinante:", determinante);
 	}
 	
 	</script>
@@ -90,4 +119,4 @@
 	</table>
 	
 	</body>
-</html>
+</html>		
