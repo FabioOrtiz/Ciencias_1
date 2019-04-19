@@ -1,0 +1,86 @@
+<html>
+	<head>
+	<meta charset="utf-8">
+	<title>Mocha Tests</title>
+	<script>
+	var lista=[];
+	var dato_Ingresado=0;
+	var temporal = 0;
+	var max=0;
+	var digito=0;
+	var contador=0;
+	var formula=0;
+	
+	var obtener_Digito = function(numero,ultimo_digito)
+	{
+		while(ultimo_digito--)
+		{
+			temporal = numero % 10;
+			numero = Math.floor((numero - temporal) / 10);
+		}
+	return temporal;
+	}
+
+	function radixSort(list)
+	{
+		max = Math.floor(Math.log10(Math.max.apply(Math,list)));  
+		posicion = [];
+		valor_Seleccionado = 0;
+
+		for(var i = 0;i<max+1;i++)
+		{
+			posicion = []
+			for(var j = 0;j<list.length;j++)
+			{
+				digito = obtener_Digito(list[j],i+1);
+				posicion[digito] = posicion[digito] || [];
+				posicion[digito].push(list[j]);
+				contador = contador + 12;
+			}
+			valor_Seleccionado = 0;
+			for(var t = 0; t< posicion.length;t++)
+			{
+				if(posicion[t] && posicion[t].length > 0)
+				{
+					for(j = 0;j<posicion[t].length;j++)
+					{
+						list[valor_Seleccionado++] = posicion[t][j];
+						contador= contador+7;
+					}
+					contador=contador+2;
+				}
+				contador=contador+6;
+			}
+			contador=contador+6;	
+		}
+		contador=contador+2;
+		return list;
+	}
+	
+	function agregar_lista()
+	{
+		dato_Ingresado = document.getElementById("dato").value;
+		console.log("Dato: ",dato_Ingresado);
+		lista.push(dato_Ingresado);
+		document.getElementById("dato").innerHTML="";
+	}
+	
+	function mostrar_lista()
+	{
+		console.log(lista);
+		document.write("LISTA ORDENADA: ",radixSort(lista), "<br>");
+		document.write("CONTADORES: ", contador);
+	}
+	</script>	
+	
+	
+	</head>
+	<body>
+	<input id="dato" type="text" placeholder="Ingresar dato de la lista">
+	
+	<button onclick="agregar_lista()">Agregar
+	</button>
+	<button onclick="mostrar_lista()">Mostrar
+	</button>
+	</body>
+</html>
