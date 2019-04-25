@@ -1,79 +1,95 @@
-<!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html>
     <head>
         <title>Ordenamiento Radix</title>
-        <script type="text/javascript">
-            
-        function Radix(){
-        var b= document.getElementById("Result");
-        var otra=document.getElementById("Result1");
-        var c=document.getElementById("a");
-        var a= c.value;
-        arreglo= new Array(a);
-        for(i=0;i<a ;i++){
-           arreglo [i]=Math.round(Math.random()*1000);
-        } multi=1;
-        matriz=new Array(a);
-        for (i = 0; i < 10; i++) {
-            matriz[i]=new Array(a);
-            matriz[i][0]=1;
-        }
-        
-        multi=1;
-        c=2;
-        otra.innerHTML="Arreglo desordenado="+ arreglo;
-        
-      
-         for(z=0;z<3;z++){
-             c=c+3;
-             for(i=0;i<a;i++){
-                 c=c+19;
-                 llave=arreglo[i]/multi;
-                 ind1=llave%10;
-                ind=parseInt(ind1); 
-                 proximo=matriz[ind][0];
-                 matriz[ind][proximo]=arreglo[i];
-                 matriz[ind][0]++; 
-         }c=c+1;
-         j=0;
-         c=c+2;
-         for(i=0;i<10;i++){
-             c=c+3;
-             for(k=1;k< matriz[i][0];k++){
-                c=c+9; 
-                arreglo[j]=matriz[i][k];
-                 j++;
-             }
-            
-         }
-         c=c+4;
-         
-          matriz=new Array(a);
-        for (i = 0; i < 10; i++) {
-            c=c+8;
-            matriz[i]=new Array(a);
-            matriz[i][0]=1;
-        }  
-        multi=multi*10;
-        c=c+3;
-     }
-     var s=parseInt(a);
-     f=3*((19*s)+30+(9*s)+80+13)+2;
+        <script>
+		var lista=[];
+		var dato_Ingresado=0;
+		var cantidad_datos=0;
+		var formula=0;
+		var contador=2;
+		var indice1=0;
+		var indice=0;
+		
+        function Radix()
+		{
+			var radix= document.getElementById("lista_ordenada");
+			var no_radix=document.getElementById("lista_desordenada");
+			cantidad_datos= lista.length;
+			
+			multi=1;
+			matriz=new Array(cantidad_datos);
+			
+			for (i = 0; i < 10; i++) 
+			{
+				matriz[i]=new Array(cantidad_datos);
+				matriz[i][0]=1;
+			}
+			
+			multi=1;
+			contador=2;
+			no_radix.innerHTML="Lista Desordenada= "+ lista;
+			
+		  
+			 for(z=0;z<3;z++){
+				 contador=contador+3;
+				 for(i=0;i<cantidad_datos;i++)
+				 {
+					contador=contador+19;
+					llave=lista[i]/multi;
+					indice1=llave%10;
+					indice=parseInt(indice1); 
+					proximo=matriz[indice][0];
+					matriz[indice][proximo]=lista[i];
+					matriz[indice][0]++; 
+			 }
+			 contador=contador+1;
+			 j=0;
+			 contador=contador+2;
+			 for(i=0;i<10;i++)
+			 {
+				 contador=contador+3;
+				 for(k=1;k< matriz[i][0];k++)
+				 {
+					contador=contador+9; 
+					lista[j]=matriz[i][k];
+					 j++;
+				 }
+			 }
+			contador=contador+4;
+			 
+			matriz=new Array(cantidad_datos);
+			
+			for (i = 0; i < 10; i++) 
+				{
+					contador=contador+8;
+					matriz[i]=new Array(cantidad_datos);
+					matriz[i][0]=1;
+				}  
+				multi=multi*10;
+				contador=contador+3;
+			}
+			formula=3*((19*cantidad_datos)+30+(9*cantidad_datos)+80+13)+2;
 
-        b.innerHTML= "Arreglo ordenado= "+arreglo+"\n"+" Contador="+c+"  Formula"+f;
-    }
+			radix.innerHTML= "Lista Ordenada= "+lista+"<br>"+"Contador= "+contador+"<br>"+"Formula= "+formula;
+		}
+		
+		function agregar_lista()
+		{
+			dato_Ingresado = document.getElementById("dato").value;
+			console.log("Dato: ",dato_Ingresado);
+			lista.push(dato_Ingresado);
+			document.getElementById("dato").innerHTML="";
+		}
+		
         </script>
     </head>
     <body>
-       Tamaño del arreglo <input type="text" id ="a">
-        <input type="button" onclick="Radix()" value="organizar">
-        <br><br>
-        <div id="Result1"></div>
-        <div id="Result"></div>
+		<input id="dato" type="text" placeholder="Ingresar dato de la lista">
+		<button onclick="agregar_lista()">Agregar
+		</button>
+        <button onclick="Radix()">Organizar
+        </button>
+        <div id="lista_desordenada"></div>
+        <div id="lista_ordenada"></div>
     </body>
 </html>
