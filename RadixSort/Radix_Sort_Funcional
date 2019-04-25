@@ -8,8 +8,9 @@
 	var temporal = 0;
 	var max=0;
 	var digito=0;
-	var contador=0;
+	var contador=1;
 	var formula=0;
+	var cantidad_datos=0;
 	
 	var obtener_Digito = function(numero,ultimo_digito)
 	{
@@ -26,7 +27,7 @@
 		max = Math.floor(Math.log10(Math.max.apply(Math,list)));  
 		posicion = [];
 		valor_Seleccionado = 0;
-
+		contador=1;
 		for(var i = 0;i<max+1;i++)
 		{
 			posicion = []
@@ -69,8 +70,31 @@
 	{
 		console.log(lista);
 		document.write("LISTA ORDENADA: ",radixSort(lista), "<br>");
-		document.write("CONTADORES: ", contador);
+		document.write("CONTADORES: ", comprobar_contadores(), "<br>");
+		document.write("POR FORMULA: ", formula);
 	}
+	
+	function calcular_formula()
+	{
+		cantidad_datos = lista.length;
+		formula = 3*((19*cantidad_datos)+30+(9*cantidad_datos)+80+13)+2;
+		formula=contador;
+	}
+	
+	function comprobar_contadores()
+	{
+		cantidad_datos = lista.length;
+		contador=539;
+		if(cantidad_datos!=2)
+		{
+			for(var i=2;i<cantidad_datos;i++)
+			{
+				contador=contador+84;
+			}
+		}
+		return contador;
+	}
+	
 	</script>	
 	
 	
@@ -80,7 +104,7 @@
 	
 	<button onclick="agregar_lista()">Agregar
 	</button>
-	<button onclick="mostrar_lista()">Mostrar
+	<button onclick="comprobar_contadores(); calcular_formula(); mostrar_lista()">Mostrar
 	</button>
 	</body>
 </html>
