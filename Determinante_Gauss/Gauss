@@ -1,0 +1,123 @@
+<html>
+	<head>
+	Gauus
+	</head>
+	<script language="javascript">
+	var orden=0 ;
+	var matriz=null;
+	var contado = false;
+	var determinante=1;
+	var contador=0;
+	var total_contador=0;
+	var formula=0;
+	
+	function Mostrar()
+	{
+		orden =document.getElementById("Orden").value;
+		var tabla= document.getElementById("Digitar_Matriz");
+		
+		for(i=0;i<orden;i++)
+		{
+			var fila=tabla.insertRow(-1);
+			for(j=0;j<orden;j++)
+			{
+				var posicion= ""+i+j;
+				var celda_individual=fila.insertCell(-1);
+				var  CELDA="<input type=\"text\"";
+				CELDA=CELDA+"id=\""+posicion+"\"";
+				CELDA=CELDA+"size=\"5\">";
+				celda_individual.innerHTML=CELDA;
+			}  
+		}
+	}  
+	
+	function Guardar_Matriz()
+	{  
+		matriz= new Array(orden);
+		for(i=0;i<orden;i++)
+		{
+			matriz[i]= new Array(orden);
+			for(j=0;j<orden;j++)
+			{
+				var temporal=document.getElementById(""+i+j).value;
+				matriz[i][j]=temporal;
+			}
+		}
+	}
+	
+	function Reducir_Matriz()
+	{
+		contado = false;
+		var contador=1;
+		
+		for(i=0;i<orden-1;i++)
+		{
+			contador=contador+5;
+			for (r=i+1; r<orden; r++)
+			{
+				if (matriz[i][i]===0)
+				{
+					h = matriz[i];
+					matriz[i]= matriz[r];
+					matriz[r] = h;
+					contado = !contado;
+				}
+			}
+			
+			for(j=i+1;j<orden;j++)
+			{
+				contador=contador+4;
+				for(k=i+1;k<orden;k++)
+				{
+					contador=contador+16;
+					matriz[j][k]=matriz[j][k]-((matriz[j][i]*matriz[i][k])/matriz[i][i]);
+				}
+				contador=contador+1
+			}
+			contador=contador+1;
+		}
+		contador=contador+2;
+		determinante=1;
+		contador=contador+2;					
+		
+		for(i=0;i<orden;i++)
+		{
+			contador=contador+6;
+			determinante=determinante*matriz[i][i];
+		}
+		
+		if(contado)
+		{
+			determinante = -determinante;
+		}
+		contador=contador+4;
+		Guardar_Contadores(contador);
+	}
+	
+	function Guardar_Contadores(provisional)
+	{
+		total_contador=provisional;
+	}
+	
+	function Resultados()
+	{
+		formula = (1/6)*((32*(orden*orden*orden))-(33*(orden*orden))+(73*orden))+3;
+		
+		var seccion = document.getElementById("Mostrar_Resultados");
+		seccion.innerHTML= "Determinante= "+determinante+"<br>"+"Formula= "+formula+"<br>"+"Contadores= "+total_contador;
+	}
+	</script>
+	<body>
+	
+	<input type="text" id="Orden" placeholder="Escribir orden de la matriz"></input>
+	
+	<button id="Armar Matriz" onclick="Mostrar();">Mostrar</button>
+	
+	<table id="Digitar_Matriz">
+	</table>
+	
+	<button id="determinante" onclick="Guardar_Matriz();Reducir_Matriz();Resultados();"/>Calcular Determinante</button>
+	
+	<div id="Mostrar_Resultados"></div>
+	</body>
+</html>
