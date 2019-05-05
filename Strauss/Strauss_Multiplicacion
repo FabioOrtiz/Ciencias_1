@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+     <script type="text/javascript">
+function insRowa()
+  {
+      var c=document.getElementById("a");
+        var a= c.value;
+      
+  var tabla = document.getElementById("tablaA");
+    for (i = 0; i < a; i++) {
+        var nuevaFila = tabla.insertRow(-1);
+        for (j = 0; j < a; j++) {
+            nombre = "a" + i + j;
+            var celda = nuevaFila.insertCell(-1);
+            xx1 = "<input type=\"text\" id=" + "\"" + nombre + "\""+ " size=3>\n";
+            celda.innerHTML = xx1;
+        }
+    }
+  }
+  function insRowb()
+  {
+      var c=document.getElementById("b");
+        var a= c.value;
+      
+  var tabla = document.getElementById("tablaB");
+    for (i = 0; i < a; i++) {
+        var nuevaFila = tabla.insertRow(-1);
+        for (j = 0; j < a; j++) {
+            nombre = "b" + i + j;
+            var celda = nuevaFila.insertCell(-1);
+            xx1 = "<input type=\"text\" id=" + "\"" + nombre + "\""+ " size=3>\n";
+            celda.innerHTML = xx1;
+        }
+    }
+  }
+  $cont=0;
+   function leer(){
+       var c=document.getElementById("a");
+        var a= c.value;
+        tm=a;
+        x=(Math.log2(tm))%1;
+        tm1 =tm;
+        if(x!=0){   
+            do{
+                tm1++;
+                x=(Math.log2(tm1))%1;
+                
+            }while(x!=0)
+            }
+        matriza=new Array(tm1);
+        for (i = 0; i < tm1; i++) {
+            matriza[i]=new Array(tm1);
+        }
+        
+            for (i = 0; i < tm; i++) {
+                for (j = 0; j < tm; j++) {
+                var r=document.getElementById("a"+i+j);
+                var b= r.value;
+                matriza[i][j]=b;
+            }
+          }
+        
+        matrizb=new Array(tm1);
+        for (i = 0; i < tm1; i++) {
+            matrizb[i]=new Array(tm1);
+        }
+           for (i = 0; i < tm; i++) {
+                for (j = 0; j < tm; j++) {
+                var r=document.getElementById("b"+i+j);
+                var b= r.value;
+                matrizb[i][j]=b;
+            }
+          }
+           matrizc=new Array(tm1);
+        for (i = 0; i < tm1; i++) {
+            matrizc[i]=new Array(tm1);
+        }
+            
+            for (i = 0; i < tm; i++) {
+                for (j = tm; j < tm1; j++) {
+                matrizb[i][j]=0;
+                matriza[i][j]=0;
+            }
+          }   
+           for (i = tm; i < tm1; i++) {
+                for (j = 0; j < tm1; j++) {
+                matrizb[i][j]=0;
+                matriza[i][j]=0;
+            }
+          }     
+        
+        strassen(matriza, matrizb,matrizc,tm1);
+        var tabla = document.getElementById("tablac");
+        for (i = 0; i < tm1; i++) {
+        var nuevaFila = tabla.insertRow(-1);
+        for (j = 0; j < tm1; j++) {
+            //nombre = "b" + i + j;
+            var celda = nuevaFila.insertCell(-1);
+            xx1 = matrizc[i][j];
+            celda.innerHTML = xx1;
+        }
+    }
+   }
+  function sum($a, $b, $c, $tm){
+       
+        for (i = 0; i < $tm; i++) {
+               for (j = 0; j < $tm; j++) {
+                   $c[i][j]= parseInt($a[i][j])+ parseInt($b[i][j]);
+               }
+        }
+      return;      
+  }
+  function subtract($a, $b, $c, $tm){
+         
+        for (i = 0; i < $tm; i++) {
+               for (j = 0; j < $tm; j++) {
+                   $c[i][j]=parseInt($a[i][j])-parseInt($b[i][j]);
+               }
+        }
+      return;     
+  }
+  
+  function strassen(a, b, c, tm){
+    $cont=$cont+1;
+		 if (tm == 1) {
+			 c[0][0] = a[0][0] * b[0][0];
+			 $cont=$cont+9;
+			 return;
+		 }
+    tama = tm/2;
+    $cont=$cont+2;
+         a11 =new Array(tama);
+         a12 = new Array(tama);
+         a21 = new Array(tama);
+         a22 = new Array(tama);
+ 
+         b11 = new Array(tama);
+         b12 = new Array(tama);
+         b21 = new Array(tama);
+         b22 = new Array(tama);
+ 
+         c11 = new Array(tama);
+         c12 = new Array(tama);
+         c21 = new Array(tama);
+         c22 = new Array(tama);
+ 
+         p1 = new Array(tama);
+         p2 = new Array(tama);
+         p3 = new Array(tama);
+         p4 = new Array(tama);
+         p5 = new Array(tama);
+         p6 = new Array(tama);
+         p7 = new Array(tama);
+         $aResult=new Array(tama);
+         $bResult=new Array(tama);
+         $cont=$cont+21;
+         
+        for (i = 0; i < tama; i++) {
+         a11[i] = new Array(tama);
+         a12[i] = new Array(tama);
+         a21[i] = new Array(tama);
+         a22[i] = new Array(tama);
+ 
+         b11[i] = new Array(tama);
+         b12[i] = new Array(tama);
+         b21[i] = new Array(tama);
+         b22[i] = new Array(tama);
+ 
+         c11[i] = new Array(tama);
+         c12[i] = new Array(tama);
+         c21[i] = new Array(tama);
+         c22[i] = new Array(tama);
+ 
+         p1[i] = new Array(tama);
+         p2[i] = new Array(tama);
+         p3[i] = new Array(tama);
+         p4[i] = new Array(tama);
+         p5[i] = new Array(tama);
+         p6[i] = new Array(tama);
+         p7[i] = new Array(tama);
+         $aResult[i]=new Array(tama);
+         $bResult[i]=new Array(tama);
+        }
+        
+        $cont=$cont+1;
+         for ($i = 0; $i < tama; $i++) {	
+				$cont=$cont+3;
+             for ($j = 0; $j < tama; $j++) {
+				$cont=$cont+2;
+                 a11[$i][$j] = a[$i][$j];
+                 a12[$i][$j] = a[$i][$j + tama];
+                 a21[$i][$j] = a[$i + tama][$j];
+                 a22[$i][$j] = a[$i + tama][$j + tama];
+ 
+                 b11[$i][$j] = b[$i][$j];
+                 b12[$i][$j] = b[$i][$j + tama];
+                 b21[$i][$j] = b[$i + tama][$j];
+                 b22[$i][$j] = b[$i + tama][$j + tama];
+				 $cont=$cont+16;
+				 $cont=$cont+24;
+             }
+			 $cont=$cont+1;
+         }
+         sum(a11, a22, $aResult, tama);// $a11 + $a22
+         sum(b11, b22, $bResult, tama);// $b11 + $b22
+         strassen($aResult, $bResult, p1, parseInt(tm/2)); // p1 = ($a11+$a22) *  ($b11+$b22)
+		 ////////////
+         sum(a21, a22, $aResult, tama);// $a21 + $a22
+         strassen($aResult, b11, p2, parseInt(tm/2)); // p2 = ($a21+$a22) * ($b11)
+         //escribir ($p2,$tama);
+		 ////////////
+ 		 
+         subtract(b12, b22, $bResult, tama); // $b12 - $b22
+         strassen(a11, $bResult, p3, parseInt(tm/2)); // p3 = ($a11) * ($b12 - $b22)
+         //escribir ($p3,$tama);
+		 ////////////         
+	 
+         subtract(b21, b11, $bResult, tama); // $b21 - $b11
+         strassen(a22, $bResult, p4, parseInt(tm/2)); // p4 = ($a22) * ($b21 - $b11)
+         //escribir ($p4,$tama);
+         
+          sum(a11, a12, $aResult, tama); // $a11 + $a12
+         strassen($aResult, b22, p5,parseInt(tm/2)); // p5 = ($a11+$a12) * ($b22)
+		 //escribir ($p5,$tama);
+         ////////////
+		 
+         subtract(a21, a11, $aResult, tama); // $a21 - $a11
+         sum(b11, b12, $bResult, tama); // $b11 + $b12
+         strassen($aResult, $bResult, p6, parseInt(tm/2)); // p6 = ($a21-$a11) * ($b11+$b12)
+         //escribir ($p6,$tama);
+         ////////////
+ 		 
+         subtract(a12, a22, $aResult, tama); // $a12 - $a22
+         sum(b21, b22, $bResult, tama); // $b21 + $b22
+         strassen($aResult, $bResult, p7, parseInt(tm/2)); // p7 = ($a12-$a22) * ($b21+$b22)
+         //escribir ($p7,$tama);
+		 ////////////
+ 		 $cont=$cont+17;
+         sum(p3, p5, c12, tama); // $c12 = p3 + p5
+         sum(p2, p4, c21, tama); // $c21 = p2 + p4
+ 
+         sum(p1, p4, $aResult, tama); // p1 + p4
+         sum($aResult, p7, $bResult, tama); // p1 + p4 + p7
+         subtract($bResult, p5, c11, tama); // $c11 = p1 + p4 - p5 + p7
+ 
+         sum(p1, p3, $aResult, tama); // p1 + p3
+         sum($aResult, p6, $bResult, tama); // p1 + p3 + p6
+         subtract($bResult, p2, c22, tama); // $c22 = p1 + p3 - p2 + p6
+         // Grouping the results obtained in $a single matrix:
+		 $cont=$cont+8;
+		 $cont=$cont+1;
+             for ($i = 0; $i < tama ; $i++) {
+			$cont=$cont+2;
+			$cont=$cont+1;
+             for ($j = 0 ; $j < tama ; $j++) {
+				$cont=$cont+2;
+                 c[$i][$j] = c11[$i][$j];
+                 c[$i][$j + tama] = c12[$i][$j];
+                 c[$i + tama][$j] = c21[$i][$j];
+                 c[$i + tama][$j + tama] = c22[$i][$j];
+				 $cont=$cont+20;
+             }
+			 $cont=$cont+1;
+         }
+		 $cont=$cont+1;
+                 return;
+ }
+   
+  
+  
+  </script>
+    </head>
+    <body>
+        Tamaño de la matriz a <input type="text" id ="a">
+        <br><br>
+    <table id="tablaA" border="1">   
+    </table>
+    <br />
+    <input type="button" onclick="insRowa()" value="Insertar matriz">
+    <div id="Result"></div>
+   
+        <br><br>
+        Tamaño de la matriz b <input type="text" id ="b">
+        <br><br>
+    <table id="tablaB" border="1">   
+    </table>
+    <br />
+    <input type="button" onclick="insRowb()" value="Insertar matriz">
+    <div id="Result"></div>
+    <input type="button" onclick="leer()" value="Multiplicar">   
+     <table id="tablac" border="1">   
+    </table>
+    <br /> 
+   
+    </body>
+</html>
