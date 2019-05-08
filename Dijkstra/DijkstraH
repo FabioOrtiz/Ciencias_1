@@ -1,0 +1,21 @@
+<html>
+	<head></head>
+	<script src="k.js"></script>
+	<script>
+		function exist()
+		{	
+			let map = new Graph();
+			map.addNode("Fullstack");
+			map.addNode("Starbucks");
+			map.addEdge("Fullstack", "Starbucks", 6);
+			map.addEdge("Fullstack", "Dig Inn", 7);
+		
+			findPathWithDijkstra(6, 7);
+		}
+		
+			
+	</script>
+	<body>
+		<button onclick="exist();">Funciona</button>
+	</body>
+</html>
