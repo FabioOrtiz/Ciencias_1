@@ -56,6 +56,7 @@
 								arreglo.push(temporal);
 							}
 					}
+			return matriz;
 		}
 		
 		function Guardar_Matriz2()
@@ -67,10 +68,11 @@
 							for(b=0;b<orden;b++)
 							{
 								var temporal2=document.getElementById(" "+a+b).value;
-								matriz[a][b]=temporal2;
+								matriz2[a][b]=temporal2;
 								arreglo2.push(temporal2);
 							}
 					}
+			return matriz2;
 		}
 		
 		function Constructor()
@@ -81,19 +83,35 @@
 		
 		function Constructor2()
 		{
-			Guardar_Matriz();
-			Guardar_Matriz2();
+			Strassen(Guardar_Matriz(), Guardar_Matriz2());
 			console.log("A: "+arreglo);
 			console.log("B: "+arreglo2);
+		}
+		
+		function Llenar(rellenada)
+		{
+			cantidad=rellenada.length;
+			console.log("RRR: "+rellenada);
+			console.log("RRR: "+cantidad);
+			matriz_Cero = new Array(cantidad);
+			for (var i=0;i<cantidad;i++)
+			{
+				matriz_Cero[i]= new Array(cantidad);
+				for (var j=0;j<cantidad;j++)
+				{
+					matriz_Cero[i][j]=0;
+				}
+			}
+			return matriz_Cero;
 		}
 		
 		function Agregar(matri, matri2)
 		{
 			var resultado=[];
-			cantidad = arreglo.length;
-				for(i=0;i<orden;i++)
+			cantidad = matri.length;
+				for(i=0;i<cantidad;i++)
 					{
-							for(j=0;j<orden;j++)
+							for(j=0;j<cantidad;j++)
 							{
 									resultado[i][j]=matri[i][j]+matri2[i][j];
 							}
@@ -103,25 +121,37 @@
 		
 		function Multiplicar(matri, matri2)
 		{
-			var resultado=[];
-			cantidad = arreglo.length;
-				for(i=0;i<orden;i++)
+			cantidad = matri.length;
+			resultado=new Array(cantidad);
+			console.log("Matri: "+matri.length);
+			for(i=0;i<cantidad;i++)
+				{
+					resultado[i]=new Array(cantidad);
+					for (k=0;k<cantidad;k++)
 					{
-						for (k=0;k<cantidad;k++)
-						{
-							for(j=0;j<cantidad;j++)
+						for(j=0;j<cantidad;j++)
+						{	
+							if (condicion==0)
 							{
-									resultado[i][j]=(matri[i][k]*matri2[k][j])+resultado[i][j];
+								resultado=Llenar(resultado);
+								condicion=1;
+								console.log("RR: "+resultado[i][j])
 							}
+							if (condicion==1)
+							{
+								console.log("R: "+resultado[i][j]+" M1: "+matri[i][k]+" M2: "+matri2[k][j])
+								resultado[i][j]=(matri[i][k]*matri2[k][j])+resultado[i][j];
+							}	
 						}
 					}
+				}
 			return resultado;
 		}
 		
 		function Restar(matri, matri2)
 		{
 			var resultado=[];
-			cantidad = arreglo.length;
+			cantidad = matri.length;
 				for(i=0;i<cantidad;i++)
 					{
 							for(j=0;j<cantidad;j++)
@@ -134,16 +164,16 @@
 		
 		function StrassenR(matrix, matrix2)
 		{
-			<!--PREGUNTAR
+			cantidad=matrix.length;
 			
-			if (n<=2)
+			if (cantidad<=2)
 			{
-				return Multiplicar(matrix, matrix2); 
+				return Multiplicar(matrix, matrix2);
 			}
 			
 			else
 			{
-				var nueva_cantidad = agregando_cantidad/2;
+				var nueva_cantidad = cantidad/2;
 				a11 = [nueva_cantidad][nueva_cantidad];
 				a12 = [nueva_cantidad][nueva_cantidad];
 				a21 = [nueva_cantidad][nueva_cantidad];
@@ -208,9 +238,9 @@
 				resultado_b = Agregar(resultado_a, p6);
 				c22 = Restar(resultado_b, p2)
 				
-				for (var i=0;i<n;i++)
+				for (var i=0;i<cantidad;i++)
 				{
-					for (var j=0;j<n;j++)
+					for (var j=0;j<cantidad;j++)
 					{
 						C[i][j] = c11[i][j]
 						C[i][j + nueva_cantidad] = c12[i][j]
@@ -218,7 +248,48 @@
 						C[i + nueva_cantidad][j + nueva_cantidad] = c22[i][j]
 					}
 				}
+				
+				return C;
 			}
+		}
+		
+		function Strassen(matris, matris2)
+		{
+			orden =document.getElementById("Orden").value;
+			matriz= new Array(orden);
+			AEnviado=new Array(orden);
+			BEnviado=new Array(orden);
+			
+			console.log("ORDEN: "+orden);
+			console.log("A: "+AEnviado);
+			console.log("Matris2: "+matris2)
+			for (var i=0;i<orden;i++)
+			{
+				AEnviado[i]= new Array(orden);
+				BEnviado[i]= new Array(orden);
+				for (var j=0;j<orden;j++)
+				{
+					AEnviado[i][j]=matris[i][j];
+					BEnviado[i][j]=matris2[i][j];
+				}
+			}
+			
+			console.log("PREVIA: "+AEnviado.length);
+			CPreparado = StrassenR(AEnviado,BEnviado);
+			
+			for (var i=0;i<orden;i++)
+			{
+				for (var j=0;j<orden;j++)
+				{
+					C=CPreparado[i][j];
+				}
+			}
+			Dibujar(C)
+		}
+		
+		function Dibujar(resultado)
+		{
+			console.log(resultado);
 		}
 		
 	</script>
