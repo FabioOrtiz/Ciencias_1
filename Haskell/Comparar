@@ -1,0 +1,35 @@
+import System.Random
+
+aleatorio n = randomRIO (0, n)
+
+escribir::String->IO ()
+escribir m = do putStr m
+
+escribirNumero::Int->IO ()
+escribirNumero n = do print n
+
+foo :: Int -> Int
+foo x = x
+
+second :: Int -> Int
+second y = y
+
+comparar::Int->Int-> IO ()
+comparar x y
+  = do if x==y then (do 
+			escribir ("empataste\n"))
+       else 
+          if x < y then (do 
+                    escribir ("ganador jugador 2 con: \n"))
+          else (do
+				escribir ("ganador jugador 1 con: \n" ))
+
+juego :: IO ()
+juego = do
+x <- randomRIO (1,6)
+y <- randomRIO (1,6)
+escribir "PLAYER 1:"
+escribirNumero x
+escribir "PLAYER 2:"
+escribirNumero y
+comparar (foo x)(second y)
