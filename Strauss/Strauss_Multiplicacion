@@ -16,7 +16,7 @@
 						{
 							var posicion= ""+i+j;
 							var celda_individual=fila.insertCell(-1);
-							var  CELDA="<input type=\"text\"";
+							var  CELDA="<input type=\"int\"";
 							CELDA=CELDA+"id=\""+posicion+"\"";
 							CELDA=CELDA+"size=\"5\">";
 							celda_individual.innerHTML=CELDA;
@@ -35,7 +35,7 @@
 						{
 							var posicion2= " "+a+b;
 							var celda_individual2=fila2.insertCell(-1);
-							var  CELDA2="<input type=\"text\"";
+							var  CELDA2="<input type=\"int\"";
 							CELDA2=CELDA2+"id=\""+posicion2+"\"";
 							CELDA2=CELDA2+"size=\"5\">";
 							celda_individual2.innerHTML=CELDA2;
@@ -52,7 +52,7 @@
 							for(j=0;j<orden;j++)
 							{
 								var temporal=document.getElementById(""+i+j).value;
-								matriz[i][j]=temporal;
+								matriz[i][j]=parseInt(temporal);
 								arreglo.push(temporal);
 							}
 					}
@@ -68,11 +68,25 @@
 							for(b=0;b<orden;b++)
 							{
 								var temporal2=document.getElementById(" "+a+b).value;
-								matriz2[a][b]=temporal2;
+								matriz2[a][b]=parseInt(temporal2);
 								arreglo2.push(temporal2);
 							}
 					}
-			return matriz2;
+			return Completar(matriz2);
+		}
+		
+		function Completar(matriz)
+		{
+			cantidad = matriz.length;
+			resultado = Math.log(cantidad)/Math.log(2);
+			resultado2 = parseInt(resultado);
+			while(resultado-resultado2!=0)
+			{				
+				cantidad=cantidad+1;
+				resultado = Math.log(cantidad)/Math.log(2);
+				resultado2 = parseInt(resultado);
+			}
+			return matriz;
 		}
 		
 		function Constructor()
@@ -269,30 +283,42 @@
 				console.log("c22: "+c22);
 				console.log("CANTIDAD: "+cantidad);
 				
-				var nuevo_valor = cantidad*2;
-				console.log("NV:"+nuevo_valor)
-				C= new Array(nuevo_valor);
-				for (var i=0;i<nuevo_valor;i++)
-				{
-					C[i] = new Array(nuevo_valor);
-					console.log("CR"+C);
-					for (var j=0;j<nuevo_valor;j++)
-					{
-						C[j]= new Array(nuevo_valor).fill(0);
-								
-						console.log("C1: "+C[i][j]);
-						console.log("C2: "+C[i][j+cantidad]);
-						console.log("C3: "+C[i+cantidad][j]);
-						console.log("C4: "+C[i+cantidad][j+cantidad]);
-						C[i][j] = c11[i][j]
-						C[i][j + cantidad] = c12[i][j];
-						C[i + cantidad][j] = c21[i][j];
-						C[i + cantidad][j + cantidad] = c22[i][j];
-					}
-				}
-				
-				return C;
+				return tomar_resultado(c11,c12,c21,c22);
 			}
+		}
+		
+		function tomar_resultado(c11,c12,c21,c22)
+		{
+			orden =document.getElementById("Orden").value;
+			division = c11.length;
+			C= new Array(orden);
+			m=0;
+			for (var i=0;i<orden;i++)
+			{
+				C[i] = new Array(orden);
+				for (var j=0;j<orden;j++)
+				{
+					
+					C[i][j]= 0;
+					m++;
+				}
+			}
+			
+			console.log("C: "+C+" I: "+m);
+			console.log("c21: "+c21);
+			console.log("DIVISION: "+division)
+			for (var i=0;i<division;i++)
+			{
+				for (var j=0;j<division;j++)
+				{
+					C[i][j] = c11[i][j];
+					C[i][j + division] = c12[i][j];
+					C[i + division][j] = c21[i][j];
+					C[i + division][j + division] = c22[i][j];
+				}
+			}
+			
+			return C;
 		}
 		
 		function Strassen(matris, matris2)
@@ -363,5 +389,3 @@
 		</table>
 	</body>
 </html>
-
-https://martin-thoma.com/strassen-algorithm-in-python-java-cpp/
