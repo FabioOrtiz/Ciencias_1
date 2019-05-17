@@ -78,7 +78,6 @@
 		function Completar(matriz)
 		{
 			cantidad = matriz.length;
-			console.log("ANTES DE: "+cantidad);
 			resultado = Math.log(cantidad)/Math.log(2);
 			resultado2 = parseInt(resultado);
 			while(resultado-resultado2!=0)
@@ -87,18 +86,12 @@
 				for (var i=0;i<cantidad+1;i++)
 				{
 					matriz[i][cantidad]=0;
-					console.log("I: "+i+" C: "+cantidad)
 				}
 				
-				console.log("Resultado: "+resultado);
-				console.log("Resultado2: "+resultado2);
 				cantidad=cantidad+1;
 				resultado = Math.log(cantidad)/Math.log(2);
 				resultado2 = parseInt(resultado);
-				console.log("RESTA: "+parseInt(resultado-resultado2));
-				console.log("RM: "+matriz);
 			}
-			console.log("PREVIA: "+matriz.length+" Matriz: "+matriz)
 			return matriz;
 		}
 		
@@ -111,8 +104,6 @@
 		function Constructor2()
 		{
 			Strassen(Guardar_Matriz(), Guardar_Matriz2());
-			console.log("A: "+arreglo);
-			console.log("B: "+arreglo2);
 		}
 		
 		function Agregar (Matriz1,Matriz2) 
@@ -127,8 +118,8 @@
 					if (!matrizRes[j]) {
 						matrizRes[j]= new Array(cantidad).fill(0);	
 					}
-					console.log("M2: "+Matriz2)
 					matrizRes[i][j] = Matriz1[i][j] + Matriz2[i][j];
+					console.log("MR: "+matrizRes[i][j]+" M1: "+Matriz1[i][j]+" M2: "+Matriz2[i][j]);
 				}
 			}
 			return matrizRes;
@@ -175,8 +166,6 @@
 		function StrassenR(matrix, matrix2)
 		{
 			cantidad=matrix.length;
-			console.log("M: "+matrix)
-			console.log("CANTIDAD_ACTUAL: "+cantidad)
 			if (cantidad<=2)
 			{
 				return Multiplicar(matrix, matrix2);
@@ -224,12 +213,28 @@
 						Zona4[i][j]=matrix2[i+cantidad][j+cantidad];
 					}
 				}
-				celda1 = reduccion_matrices(Area1, Zona1);
+				console.log("Area1: "+Area1+ " Area2: "+Area2);
+				console.log("Area3: "+Area3+ " Area4: "+Area4);
+				console.log("Zona1: "+Zona1+ " Zona2: "+Zona2);
+				console.log("Zona3: "+Zona3+ " Zona4: "+Zona4);
+				
+				primeraparte = Multiplicar(Agregar(Area1,Area4),Agregar(Zona1,Zona4));
+				segundaparte = Multiplicar(Agregar(Area3,Area4),Zona1);
+				tercerparte = Multiplicar(Area1,(Restar(Zona2,Zona4)));
+				cuartaparte = Multiplicar(Area4,Restar(Zona3,Zona1));
+				quintaparte = Multiplicar(Agregar(Area1,Area2),Zona4);
+				sextaparte = Multiplicar(Restar(Area3,Area1),Agregar(Zona1,Zona2));
+				septimaparte = Multiplicar(Restar(Area2,Area4),Agregar(Zona3,Zona4));
+				
+				celda1 = Agregar(Agregar(primeraparte,cuartaparte), Restar(septimaparte, quintaparte));
+				celda2 = Agregar(tercerparte,quintaparte);
+				celda3 = Agregar(segundaparte,cuartaparte);
+				celda4 = Agregar(Agregar(primeraparte,tercerparte),Restar(sextaparte,segundaparte));
+				
 				console.log("C11: "+celda1);
-				console.log("P2: "+Area2+" Q2 : "+Zona2)
-				celda2 = reduccion_matrices(Area2, Zona2);
-				celda3 = reduccion_matrices(Area3, Zona3);
-				celda4 = reduccion_matrices(Area4, Zona4);
+				console.log("C12: "+celda2);
+				console.log("C21: "+celda3);
+				console.log("C22: "+celda4);
 				
 				return tomar_resultado(celda1,celda2,celda3,celda4);
 			}
@@ -342,13 +347,7 @@
 			
 			resultado_a = Agregar(p1, p3);
 			resultado_b = Agregar(resultado_a, p6);
-			c22 = Restar(resultado_b, p2)
-			
-			console.log("c11: "+c11);
-			console.log("c12: "+c12);
-			console.log("c21: "+c21);
-			console.log("c22: "+c22);
-			console.log("CANTIDAD: "+cantidad);
+			c22 = Restar(resultado_b, p2);
 			
 			return tomar_resultado(c11,c12,c21,c22);			
 		}
@@ -370,7 +369,6 @@
 				}
 			}
 			
-			console.log("DIVISION: "+division)
 			for (var i=0;i<division;i++)
 			{
 				for (var j=0;j<division;j++)
@@ -393,22 +391,17 @@
 			AEnviado=new Array(orden);
 			BEnviado=new Array(orden);
 			
-			console.log("ORDEN: "+orden);
-			console.log("A: "+AEnviado);
-			console.log("Matris2: "+matris2)
 			for (var i=0;i<orden;i++)
 			{
 				AEnviado[i]= new Array(orden);
 				BEnviado[i]= new Array(orden);
 				for (var j=0;j<orden;j++)
 				{
-					console.log("I: "+i+" J: "+j);
 					AEnviado[i][j]=matris[i][j];
 					BEnviado[i][j]=matris2[i][j];
 				}
 			}
 			
-			console.log("PREVIA2: "+AEnviado);
 			CPreparado = StrassenR(AEnviado,BEnviado);
 			
 			C= new Array(orden);
@@ -426,7 +419,6 @@
 		
 		function Dibujar(resultado)
 		{
-			console.log("FINAL: "+resultado);
 			orden =document.getElementById("Orden").value;
 			var tablaR= document.getElementById("Resultado");	
 				for(i=0;i<orden;i++)
