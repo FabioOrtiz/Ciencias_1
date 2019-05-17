@@ -56,7 +56,7 @@
 								arreglo.push(temporal);
 							}
 					}
-			return matriz;
+			return Completar(matriz);
 		}
 		
 		function Guardar_Matriz2()
@@ -78,14 +78,27 @@
 		function Completar(matriz)
 		{
 			cantidad = matriz.length;
+			console.log("ANTES DE: "+cantidad);
 			resultado = Math.log(cantidad)/Math.log(2);
 			resultado2 = parseInt(resultado);
 			while(resultado-resultado2!=0)
-			{				
+			{	
+				matriz[cantidad] = new Array (cantidad).fill(0);
+				for (var i=0;i<cantidad+1;i++)
+				{
+					matriz[i][cantidad]=0;
+					console.log("I: "+i+" C: "+cantidad)
+				}
+				
+				console.log("Resultado: "+resultado);
+				console.log("Resultado2: "+resultado2);
 				cantidad=cantidad+1;
 				resultado = Math.log(cantidad)/Math.log(2);
 				resultado2 = parseInt(resultado);
+				console.log("RESTA: "+parseInt(resultado-resultado2));
+				console.log("RM: "+matriz);
 			}
+			console.log("PREVIA: "+matriz.length+" Matriz: "+matriz)
 			return matriz;
 		}
 		
@@ -114,6 +127,7 @@
 					if (!matrizRes[j]) {
 						matrizRes[j]= new Array(cantidad).fill(0);	
 					}
+					console.log("M2: "+Matriz2)
 					matrizRes[i][j] = Matriz1[i][j] + Matriz2[i][j];
 				}
 			}
@@ -161,136 +175,188 @@
 		function StrassenR(matrix, matrix2)
 		{
 			cantidad=matrix.length;
-			console.log("CANTIDADR: "+matrix.length)
+			console.log("M: "+matrix)
+			console.log("CANTIDAD_ACTUAL: "+cantidad)
 			if (cantidad<=2)
 			{
 				return Multiplicar(matrix, matrix2);
 			}
 			
-			else
+			if (cantidad==4)
 			{
-				var nueva_cantidad = cantidad/2;
-				a11 = new Array (nueva_cantidad);
-				a12 = new Array (nueva_cantidad);
-				a21 = new Array (nueva_cantidad);
-				a22 = new Array (nueva_cantidad);
-				
-				b11 = new Array (nueva_cantidad);
-				b12 = new Array (nueva_cantidad);
-				b21 = new Array (nueva_cantidad);
-				b22 = new Array (nueva_cantidad);
-				
-				resultado_a = [nueva_cantidad][nueva_cantidad];
-				resultado_b = [nueva_cantidad][nueva_cantidad];
-				
-				for (var i=0; i<nueva_cantidad; i++)
-					{
-					a11[i] = new Array (nueva_cantidad);
-					a12[i] = new Array (nueva_cantidad);
-					a21[i] = new Array (nueva_cantidad);
-					a22[i] = new Array (nueva_cantidad);					
-					b11[i] = new Array (nueva_cantidad);
-					b12[i] = new Array (nueva_cantidad);
-					b21[i] = new Array (nueva_cantidad);
-					b22[i] = new Array (nueva_cantidad);
-					
-					for (var j=0; j<nueva_cantidad; j++)
-						{
-							if (!a11[j]) {
-								a11[j]= new Array(nueva_cantidad).fill(0);	
-							}
-							
-							if (!a12[j]) {
-								a12[j]= new Array(nueva_cantidad).fill(0);	
-							}
-							
-							if (!a21[j]) {
-								a21[j]= new Array(nueva_cantidad).fill(0);	
-							}
-							
-							if (!a22[j]) {
-								a22[j]= new Array(nueva_cantidad).fill(0);	
-							}
-							
-							if (!b11[j]) {
-								b11[j]= new Array(nueva_cantidad).fill(0);	
-							}
-							
-							if (!b12[j]) {
-								b12[j]= new Array(nueva_cantidad).fill(0);	
-							}
-							
-							if (!b21[j]) {
-								b21[j]= new Array(nueva_cantidad).fill(0);	
-							}
-							
-							if (!b22[j]) {
-								b22[j]= new Array(nueva_cantidad).fill(0);	
-							}
-							
-							console.log("A11: "+a11[i][j]);
-							
-							a11[i][j]=matrix[i][j];
-							a12[i][j]=matrix[i][j+nueva_cantidad];
-							a21[i][j]=matrix[i+nueva_cantidad][j];
-							a22[i][j]=matrix[i+nueva_cantidad][j+nueva_cantidad];
-							
-							b11[i][j]=matrix2[i][j];
-							b12[i][j]=matrix2[i][j+nueva_cantidad];
-							b21[i][j]=matrix2[i+nueva_cantidad][j];
-							b22[i][j]=matrix2[i+nueva_cantidad][j+nueva_cantidad];
-						}
-					}
-				
-				resultado_a=Agregar(a11,a22);
-				resultado_b=Agregar(b11,b22);
-				p1 = StrassenR(resultado_a, resultado_b);
-				
-				resultado_a=Agregar(a21, a22);
-				p2 = StrassenR(resultado_a, b11);
-				
-				resultado_b=Restar(b12, b22);
-				p3 = StrassenR(a11, resultado_b);
-				
-				resultado_b=Restar(b21,b11);
-				p4=StrassenR(a22, resultado_b);
-				
-				resultado_a=Agregar(a11, a12);
-				p5=StrassenR(resultado_a, b22);
-				
-				resultado_a= Restar(a21, a11);
-				resultado_b=Agregar(b11,b12);
-				p6=StrassenR(resultado_a,resultado_b);
-				
-				resultado_a= Restar(a12, a22);
-				resultado_b=Agregar(b21,b22);
-				p7=StrassenR(resultado_a, resultado_b);
-				
-				c12 = Agregar(p3, p5);
-				c21 = Agregar(p2, p4);
-				
-				resultado_a=Agregar(p1, p4);
-				resultado_b=Agregar(resultado_a, p7);
-				c11 = Restar(resultado_b, p5);
-				
-				resultado_a = Agregar(p1, p3);
-				resultado_b = Agregar(resultado_a, p6);
-				c22 = Restar(resultado_b, p2)
-				
-				console.log("c11: "+c11);
-				console.log("c12: "+c12);
-				console.log("c21: "+c21);
-				console.log("c22: "+c22);
-				console.log("CANTIDAD: "+cantidad);
-				
-				return tomar_resultado(c11,c12,c21,c22);
+				return reduccion_matrices(matrix, matrix2);
 			}
+			
+			if (cantidad==8)
+			{
+				cantidad = cantidad/2;
+				Area1 = new Array (cantidad);
+				Area2 = new Array (cantidad);
+				Area3 = new Array (cantidad);
+				Area4 = new Array (cantidad);
+				
+				Zona1 = new Array (cantidad);
+				Zona2 = new Array (cantidad);
+				Zona3 = new Array (cantidad);
+				Zona4 = new Array (cantidad);
+				for (var i=0; i<cantidad;i++)
+				{
+					Area1[i] = new Array (cantidad).fill(0);
+					Area2[i] = new Array (cantidad).fill(0);
+					Area3[i] = new Array (cantidad).fill(0);
+					Area4[i] = new Array (cantidad).fill(0);
+					
+					Zona1[i] = new Array (cantidad).fill(0);
+					Zona2[i] = new Array (cantidad).fill(0);
+					Zona3[i] = new Array (cantidad).fill(0);
+					Zona4[i] = new Array (cantidad).fill(0);
+					
+					for (var j=0; j<cantidad;j++)
+					{	
+						Area1[i][j]=matrix[i][j];
+						Area2[i][j]=matrix[i][j+cantidad];
+						Area3[i][j]=matrix[i+cantidad][j];
+						Area4[i][j]=matrix[i+cantidad][j+cantidad];
+						
+						Zona1[i][j]=matrix2[i][j];
+						Zona2[i][j]=matrix2[i][j+cantidad];
+						Zona3[i][j]=matrix2[i+cantidad][j];
+						Zona4[i][j]=matrix2[i+cantidad][j+cantidad];
+					}
+				}
+				celda1 = reduccion_matrices(Area1, Zona1);
+				console.log("C11: "+celda1);
+				console.log("P2: "+Area2+" Q2 : "+Zona2)
+				celda2 = reduccion_matrices(Area2, Zona2);
+				celda3 = reduccion_matrices(Area3, Zona3);
+				celda4 = reduccion_matrices(Area4, Zona4);
+				
+				return tomar_resultado(celda1,celda2,celda3,celda4);
+			}
+		}
+		
+		function reduccion_matrices(matrix, matrix2)
+		{
+			cantidad=matrix.length;
+			var nueva_cantidad = cantidad/2;
+			a11 = new Array (nueva_cantidad);
+			a12 = new Array (nueva_cantidad);
+			a21 = new Array (nueva_cantidad);
+			a22 = new Array (nueva_cantidad);
+			
+			b11 = new Array (nueva_cantidad);
+			b12 = new Array (nueva_cantidad);
+			b21 = new Array (nueva_cantidad);
+			b22 = new Array (nueva_cantidad);
+			
+			resultado_a = [nueva_cantidad][nueva_cantidad];
+			resultado_b = [nueva_cantidad][nueva_cantidad];
+			
+			for (var i=0; i<nueva_cantidad; i++)
+				{
+				a11[i] = new Array (nueva_cantidad);
+				a12[i] = new Array (nueva_cantidad);
+				a21[i] = new Array (nueva_cantidad);
+				a22[i] = new Array (nueva_cantidad);					
+				b11[i] = new Array (nueva_cantidad);
+				b12[i] = new Array (nueva_cantidad);
+				b21[i] = new Array (nueva_cantidad);
+				b22[i] = new Array (nueva_cantidad);
+				
+				for (var j=0; j<nueva_cantidad; j++)
+					{
+						if (!a11[j]) {
+							a11[j]= new Array(nueva_cantidad).fill(0);	
+						}
+						
+						if (!a12[j]) {
+							a12[j]= new Array(nueva_cantidad).fill(0);	
+						}
+						
+						if (!a21[j]) {
+							a21[j]= new Array(nueva_cantidad).fill(0);	
+						}
+						
+						if (!a22[j]) {
+							a22[j]= new Array(nueva_cantidad).fill(0);	
+						}
+						
+						if (!b11[j]) {
+							b11[j]= new Array(nueva_cantidad).fill(0);	
+						}
+						
+						if (!b12[j]) {
+							b12[j]= new Array(nueva_cantidad).fill(0);	
+						}
+						
+						if (!b21[j]) {
+							b21[j]= new Array(nueva_cantidad).fill(0);	
+						}
+						
+						if (!b22[j]) {
+							b22[j]= new Array(nueva_cantidad).fill(0);	
+						}
+						
+						a11[i][j]=matrix[i][j];
+						a12[i][j]=matrix[i][j+nueva_cantidad];
+						a21[i][j]=matrix[i+nueva_cantidad][j];
+						a22[i][j]=matrix[i+nueva_cantidad][j+nueva_cantidad];
+						
+						b11[i][j]=matrix2[i][j];
+						b12[i][j]=matrix2[i][j+nueva_cantidad];
+						b21[i][j]=matrix2[i+nueva_cantidad][j];
+						b22[i][j]=matrix2[i+nueva_cantidad][j+nueva_cantidad];
+					}
+				}
+			
+			resultado_a=Agregar(a11,a22);
+			resultado_b=Agregar(b11,b22);
+			p1 = Multiplicar(resultado_a, resultado_b);
+			
+			resultado_a=Agregar(a21, a22);
+			p2 = Multiplicar(resultado_a, b11);
+			
+			resultado_b=Restar(b12, b22);
+			p3 = Multiplicar(a11, resultado_b);
+			
+			resultado_b=Restar(b21,b11);
+			p4=Multiplicar(a22, resultado_b);
+			
+			resultado_a=Agregar(a11, a12);
+			p5=Multiplicar(resultado_a, b22);
+			
+			resultado_a= Restar(a21, a11);
+			resultado_b=Agregar(b11,b12);
+			p6=Multiplicar(resultado_a,resultado_b);
+			
+			resultado_a= Restar(a12, a22);
+			resultado_b=Agregar(b21,b22);
+			p7=Multiplicar(resultado_a, resultado_b);
+			
+			c12 = Agregar(p3, p5);
+			c21 = Agregar(p2, p4);
+			
+			resultado_a=Agregar(p1, p4);
+			resultado_b=Agregar(resultado_a, p7);
+			c11 = Restar(resultado_b, p5);
+			
+			resultado_a = Agregar(p1, p3);
+			resultado_b = Agregar(resultado_a, p6);
+			c22 = Restar(resultado_b, p2)
+			
+			console.log("c11: "+c11);
+			console.log("c12: "+c12);
+			console.log("c21: "+c21);
+			console.log("c22: "+c22);
+			console.log("CANTIDAD: "+cantidad);
+			
+			return tomar_resultado(c11,c12,c21,c22);			
 		}
 		
 		function tomar_resultado(c11,c12,c21,c22)
 		{
-			orden =document.getElementById("Orden").value;
 			division = c11.length;
+			orden =division*2;
 			C= new Array(orden);
 			m=0;
 			for (var i=0;i<orden;i++)
@@ -304,8 +370,6 @@
 				}
 			}
 			
-			console.log("C: "+C+" I: "+m);
-			console.log("c21: "+c21);
 			console.log("DIVISION: "+division)
 			for (var i=0;i<division;i++)
 			{
@@ -318,12 +382,13 @@
 				}
 			}
 			
+			console.log("C: "+C);
 			return C;
 		}
 		
 		function Strassen(matris, matris2)
 		{
-			orden =document.getElementById("Orden").value;
+			orden =matris.length;
 			matriz= new Array(orden);
 			AEnviado=new Array(orden);
 			BEnviado=new Array(orden);
@@ -337,12 +402,13 @@
 				BEnviado[i]= new Array(orden);
 				for (var j=0;j<orden;j++)
 				{
+					console.log("I: "+i+" J: "+j);
 					AEnviado[i][j]=matris[i][j];
 					BEnviado[i][j]=matris2[i][j];
 				}
 			}
 			
-			console.log("PREVIA: "+AEnviado.length);
+			console.log("PREVIA2: "+AEnviado);
 			CPreparado = StrassenR(AEnviado,BEnviado);
 			
 			C= new Array(orden);
