@@ -1,0 +1,58 @@
+# Crea un nuevo Nodo con 2 hojas
+class Node:
+    def __init__(self, value, left = None, right = None):
+        self.value = value
+        self.left = left
+        self.right = right
+        
+# Convierte un arbol en una lista
+def t_lista(tree):
+    if tree == None:
+        return []
+    return t_lista(tree.left) + [tree.value] + t_lista(tree.right)
+
+# Imprime los valores del arbol
+def print_tree(tree):
+    if tree!=None:
+        print_tree(tree.left)
+        print(tree.value)
+        print_tree(tree.right)
+
+# Busca un valor en el arbol
+def search(tree, value):
+    if tree == None:
+        return False
+    if tree.value == value:
+        return True
+    if tree.value > value:
+        return search(tree.left, value)
+    return search(tree.right, value)
+
+# Inserta un valor en el arbol
+def insert(tree, value):
+    if tree == None:
+        return Node(value, None,None)
+    if value == tree.value:
+        return Node(tree.value, tree.left, tree.right)
+    if value > tree.value:
+        return Node(tree.value, tree.left, insert(tree.right, value))
+    if value < tree.value:
+        return Node(tree.value, insert(tree.left, value), tree.right)
+
+# Convierte una lista a un arbol
+def insert_list(tree, node_list):
+    if len(node_list) == 1:
+        return insert(tree, node_list[0])
+    return insert_list(insert(tree, node_list[0]), node_list[1::])
+
+# Declaracion del arbol
+tree = Node(25, Node(18, Node(10, None, None), Node(20,None,None)), Node(50,Node(40,None,None),None))
+"""
+print(search(tree,10))
+tree = insert(tree,5)
+print_tree(tree)
+print(t_lista(tree))
+"""
+
+# Prueba de insercion e impresion
+print_tree(insert_list(tree,[11,8,20,45,23]))
