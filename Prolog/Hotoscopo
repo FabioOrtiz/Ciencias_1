@@ -1,0 +1,15 @@
+signo(aries,3,21,4,20).
+signo(tauro,4,21,5,21).
+signo(geminis,5,22,6,21).
+signo(cancer,6,22,7,22).
+signo(leo,7,23,8,23).
+signo(virgo,8,24,9,23).
+signo(libra,9,24,10,23).
+signo(escorpio,10,24,11,22).
+signo(sagitario,11,23,12,21).
+signo(capricornio,12,22,1,20).
+signo(acuario,1,21,2,18).
+signo(piscis,2,19,3,20).
+
+edad(DAY, MONTH, YEAR, EDAD):- (DAY=<24, MONTH=<5,EDAD=2019-YEAR; EDAD=2018-YEAR).
+horoscopo(DAY, MONTH, YEAR, EDAD, SIGNO):- signo(SIGNO,MONTH1, DAY1 ,MONTH2,DAYF), ((MONTH==MONTH1,DAY>=DAY1); (MONTH==MONTH2, DAY=<DAYF)), edad(DAY, MONTH, YEAR, EDAD).
