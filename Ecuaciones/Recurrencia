@@ -1,0 +1,137 @@
+<html>
+	<script>
+		coeficientes_datos=[];
+		condiciones = [];
+		multiplicador = 0;
+		raices= [];
+		
+		function crear()
+		{
+			terminos=document.getElementById("Cantidad").value;
+			var tabla = document.getElementById("variables_n");
+			var tablaCoeficientes = document.getElementById("coeficientes");
+			for(i=0;i<terminos;i++)
+			{
+				var fila=tabla.insertRow(-1);
+					for(j=0;j<2;j++)
+					{
+						var posicion= ""+i+j;
+						var celda_individual=fila.insertCell(-1);
+						var  CELDA="<input type=\"int\"";
+						CELDA=CELDA+"id=\" "+posicion+"\"";
+						CELDA=CELDA+"size=\"5\">";
+						celda_individual.innerHTML=CELDA;
+					}
+			}
+			terminos=parseInt(terminos)+1;
+			for(i=0;i<terminos;i++)
+			{
+				var fila2=tablaCoeficientes.insertRow(-1);
+					for(j=0;j<1;j++)
+					{
+						var posicion2= ""+i+j;
+						var celda_individual2=fila2.insertCell(-1);
+						var  CELDA2="<input type=\"int\"";
+						CELDA2=CELDA2+"id=\"A"+posicion2+"\"";
+						CELDA2=CELDA2+"size=\"5\">";
+						celda_individual2.innerHTML=CELDA2;
+					}
+			}
+		} 
+		
+		function guardar_coeficientes()
+		{
+			terminos=document.getElementById("Cantidad").value;
+			terminos=parseInt(terminos)+1;
+			
+			for(i=0;i<terminos;i++)
+				{
+					for(j=0;j<1;j++)
+					{
+						var temporal=document.getElementById("A"+i+j).value;
+						coeficientes_datos.push(temporal);
+					}
+				}
+			console.log(coeficientes_datos);
+			return coeficientes_datos;
+		}
+		
+		function guardar_condiciones()
+		{
+			terminos=document.getElementById("Cantidad").value;
+			
+			for(i=0;i<terminos;i++)
+				{
+					for(j=0;j<2;j++)
+					{
+						console.log(document.getElementById(" "+i+j));
+						var temporal=document.getElementById(" "+i+j).value;
+						condiciones.push(temporal);
+					}
+				}
+			console.log(condiciones);
+			return coeficientes_datos;
+		}
+		
+		function derivar_funcion(x)
+		{
+			multiplicador = (x.length)-1;
+			console.log("M: "+multiplicador);
+			for(i=0;i<x.length;i++)
+			{
+				x[i] = x[i]* multiplicador;
+				multiplicador = multiplicador-1;
+			}
+			x.pop();
+			
+			return x;
+		}
+		
+		function newton_rhapson(x)
+		{
+			derivada =derivar_funcion(x)
+			division = x/derivada;
+			while(Math.abs(division)>=0.0001)
+			{
+				division = x/derivada;
+				
+				x = x-division;
+			}
+			raices.push(x);
+			
+			console.log("R: "+raices);
+			console.log("DERIVADAS: "+derivada);
+			return derivada;
+		}
+		
+		function calcular_raices(x)
+		{
+			terminos=document.getElementById("Cantidad").value;
+			
+			while(terminos>0)
+			{
+				x = newton_rhapson(x)
+				terminos=terminos-1;
+			}
+		}
+		
+		function constructor_funcion()
+		{
+			crear();
+		}
+		
+		function guardar_funcion()
+		{
+			guardar_condiciones();
+			calcular_raices(guardar_coeficientes());
+		}
+	</script>
+	<body>
+		<input type="text" placeholder="Ingresar el grado de la ecuacion" id="Cantidad"></input>
+		<button onclick="constructor_funcion();">Crear</button>
+		<button onclick="guardar_funcion();">Guardar</button>
+		<table id="variables_n"></table>
+		COEFICIENTES
+		<table id="coeficientes"></table>
+	</body>
+</html>
