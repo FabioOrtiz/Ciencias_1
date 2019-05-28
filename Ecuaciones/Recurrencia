@@ -5,6 +5,9 @@
 		multiplicador = 0;
 		raices= [];
 		valor = 0;
+		divisores=[];
+		raices =[];
+		
 		function crear()
 		{
 			terminos=document.getElementById("Cantidad").value;
@@ -170,13 +173,53 @@
 		
 		function funcion_general(x,y)
 		{
-			raiz = newton_rhapson(x,y);
+			raiz = newton_rhapson(x,y);	
+		}
+		
+		function division_sintetica(operacion)
+		{
+			dividendo = operacion.pop();
+			operacion.push(dividendo);
 			
+			if (dividendo<0)
+			{
+				dividendo=dividendo*-1;
+			}
+			
+			for(i=1;i<=dividendo;i++)
+			{
+				console.log("I: "+i+" D: "+dividendo);
+				if (dividendo%i==0)
+				{
+					divisores.push(i);
+					menosi=i*-1;
+					divisores.push(menosi);
+				}
+			}
+			
+			for (j=0;j<divisores.length;j++)
+			{
+				primerValor = operacion[0]*divisores[j];
+				valor=0;
+				for(i=1;i<operacion.length;i++)
+				{
+					valor = operacion[i]+primerValor;
+					primerValor = valor*divisores[j];
+					
+					console.log("O: "+operacion[i]+" D: "+dividendo+" V: "+valor+" DJ: "+divisores[j])
+					if (operacion[i]==dividendo && valor==0)
+					{
+						raices.push(divisores[j]);
+					}
+				}
+			}
+			
+			console.log("R: "+raices);
 		}
 		
 		function prueba()
 		{
-			funcion_general([1,0,-2,-5],[1,0,-2,-5]);
+			division_sintetica([1,-5,2,8]);
 		}
 		
 	</script>
