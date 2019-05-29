@@ -154,16 +154,16 @@
 		
 		function newton_rhapson(x,y)
 		{
-			original=y;
-			
-			console.log("O: "+original)
 			numeral =0;
-			console.log("N: "+numeral)
 			derivada =derivar_funcion(x);
-			console.log("D: "+derivada);
+			original  = y;
 			
+			console.log("Derivada: "+derivada+" O: "+original+" Y: "+y)
+		 	
 			for(var i=0;i<7;i++)
 			{
+				console.log("O1: "+original)
+				console.log("D1: "+derivada);
 				console.log("FO: "+calcular_valor(original,numeral)+" FD: "+calcular_valor(derivada,numeral)+" Numeral: "+numeral);
 				numeral=numeral-(calcular_valor(original,numeral)/calcular_valor(derivada,numeral));
 			}
@@ -253,6 +253,7 @@
 		
 		function division_sintetica_1(arreglos, revalor)
 		{
+			nuevos_coeficientes=[];
 			primerValor = arreglos[0]*revalor;
 			valor=0;
 			nuevos_coeficientes.push(arreglos[0]);
@@ -277,20 +278,31 @@
 			
 			raiz_c.push(x1);
 			raiz_c.push(x2);
-			
-			return raiz_c;
-		}
-		
-		function prueba()
-		{
-			return newton_rhapson([3,-14,-15,42,40],[3,-14,-15,42,40]);
 		}
 		
 		function real()
 		{
-			primeraRaiz = prueba();
-			console.log("PR: "+primeraRaiz);
-			console.log("NC: "+division_sintetica_1(prueba,primeraRaiz));
+			funcion = [3,-14,-15,42,40];
+			funcion1 = [3,-14,-15,42,40];
+			i = funcion.length;
+			
+			while(i>2)
+			{
+				Raiz = newton_rhapson(funcion, funcion1, funcion2);
+				retorno = division_sintetica_1(funcion1, Raiz);
+				funcion=retorno;
+				funcion1=retorno;
+				funcion2=retorno;
+				raiz_c.push(Raiz);
+				i=i-1;
+			}
+			
+			if (i==2)
+			{
+				cuadratica(funcion);
+			}
+			
+			console.log("RAICES: "+raiz_c)
 		}
 		
 	</script>
