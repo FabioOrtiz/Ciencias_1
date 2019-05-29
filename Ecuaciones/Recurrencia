@@ -7,6 +7,9 @@
 		valor = 0;
 		divisores=[];
 		raices =[];
+		raiz_c =[];
+		dividendos=[];
+		nuevos_coeficientes=[];
 		
 		function crear()
 		{
@@ -94,7 +97,7 @@
 		
 		function calcular_valor(lista, valor)
 		{
-			potencia = lista.length
+			potencia = lista.length;
 			potencia=potencia-1;
 			resultado=0;
 			for(i=0;i< lista.length;i++)
@@ -111,16 +114,22 @@
 			numero = 0;
 			console.log("L: "+arreglo+" N: "+numero)
 			limbo = calcular_valor(arreglo, numero)
-			
-			console.log("LIMBO0: "+limbo)
+			temporal =0;
+			console.log("LIMBO 0: "+limbo)
 			
 			if (limbo>0)
 			{
-				while(limbo>0)
+				a=0;
+				while(a<5)
 				{
+					console.log("T: "+temporal);
 					temporal=numero;
-					numero = numero-1;
+					numero = (numero)-1;
+					console.log("N: "+numero)
 					limbo = calcular_valor(arreglo,numero);
+					console.log("Limbo 1: "+limbo);
+					console.log("A: "+a)
+					a=a+1;
 				}
 				return temporal;
 			}
@@ -129,6 +138,7 @@
 			{
 				while(limbo<0)
 				{
+					console.log("T: "+temporal);
 					temporal=numero;
 					numero = numero+1;
 					limbo = calcular_valor(arreglo,numero);
@@ -147,11 +157,12 @@
 			original=y;
 			
 			console.log("O: "+original)
-			numeral =calcular_pivote(x);
+			numeral =0;
+			console.log("N: "+numeral)
 			derivada =derivar_funcion(x);
-			console.log("O: "+original);
+			console.log("D: "+derivada);
 			
-			for(var i=0;i<5;i++)
+			for(var i=0;i<7;i++)
 			{
 				console.log("FO: "+calcular_valor(original,numeral)+" FD: "+calcular_valor(derivada,numeral)+" Numeral: "+numeral);
 				numeral=numeral-(calcular_valor(original,numeral)/calcular_valor(derivada,numeral));
@@ -171,21 +182,29 @@
 			calcular_raices(guardar_coeficientes());
 		}
 		
-		function funcion_general(x,y)
+		function lista_divisores(x,y)
 		{
-			raiz = newton_rhapson(x,y);	
+			for(i=0;i<x.length;i++)
+			{
+				for(j=0;j<y.length;j++)
+				{
+					x[i]=x[i]/y[j];
+				}
+			}
+			
+			return x;
 		}
 		
 		function division_sintetica(operacion)
 		{
 			dividendo = operacion.pop();
 			operacion.push(dividendo);
+			primero = operacion[0];
 			
 			if (dividendo<0)
 			{
 				dividendo=dividendo*-1;
 			}
-			
 			for(i=1;i<=dividendo;i++)
 			{
 				console.log("I: "+i+" D: "+dividendo);
@@ -196,6 +215,22 @@
 					divisores.push(menosi);
 				}
 			}
+			
+			for(i=0;i<=dividendo;i++)
+			{
+				if(primero%i==0)
+				{
+					dividendos.push(i);
+					menosi=i*-1;
+					dividendos.push(menosi);
+				}
+			}
+			
+			console.log("DVISORES: "+divisores+" DIVIDENDOS: "+dividendos)
+			
+			divisores = lista_divisores(divisores,dividendos);
+			
+			console.log("Divisores: "+divisores)
 			
 			for (j=0;j<divisores.length;j++)
 			{
@@ -213,13 +248,49 @@
 					}
 				}
 			}
-			
 			console.log("R: "+raices);
+		}
+		
+		function division_sintetica_1(arreglos, revalor)
+		{
+			primerValor = arreglos[0]*revalor;
+			valor=0;
+			nuevos_coeficientes.push(arreglos[0]);
+			for(i=1;i<arreglos.length;i++)
+			{
+				valor = arreglos[i]+primerValor;
+				primerValor = valor*revalor;
+				console.log("NuevosC: "+valor)
+				nuevos_coeficientes.push(valor);
+			}
+			return nuevos_coeficientes;
+		}
+		
+		function cuadratica(matrix)
+		{
+			a = matrix[0];
+			b = matrix[1];
+			c = matrix[2];
+			
+			x1 = (-b+ Math.sqrt(Math.pow(b, 2)-(4*a*c)))/(2*a);
+			x2 = (-b- Math.sqrt(Math.pow(b, 2)-(4*a*c)))/(2*a);
+			
+			raiz_c.push(x1);
+			raiz_c.push(x2);
+			
+			return raiz_c;
 		}
 		
 		function prueba()
 		{
-			division_sintetica([1,-5,2,8]);
+			return newton_rhapson([3,-14,-15,42,40],[3,-14,-15,42,40]);
+		}
+		
+		function real()
+		{
+			primeraRaiz = prueba();
+			console.log("PR: "+primeraRaiz);
+			console.log("NC: "+division_sintetica_1(prueba,primeraRaiz));
 		}
 		
 	</script>
@@ -227,7 +298,7 @@
 		<input type="text" placeholder="Ingresar el grado de la ecuacion" id="Cantidad"></input>
 		<button onclick="constructor_funcion();">Crear</button>
 		<button onclick="guardar_funcion();">Guardar</button>
-		<button onclick="prueba();">Prueba</button>
+		<button onclick="real();">Prueba</button>
 		<table id="variables_n"></table>
 		COEFICIENTES
 		<table id="coeficientes"></table>
