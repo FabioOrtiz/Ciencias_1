@@ -1,0 +1,25 @@
+from functools import reduce
+
+personas =[]
+
+def crear_persona(nombre, edad, cantidad_hijos):
+    persona =[nombre, edad, cantidad_hijos]
+    personas.append(persona)
+    return persona
+
+def depurar_hijos(familia):
+    f=list(filter(lambda x: x[2]<2, familia))
+    return f
+
+def depurar_edades(familia):
+    f=list(filter(lambda x: x[1]>=25 and x[1]<=30, familia))
+    return f
+
+crear_persona('Camilo',25,2)
+crear_persona('Camil',30,1)
+crear_persona('Cami',27,2)
+crear_persona('Cam',40,2)
+crear_persona('Ca',21,1)
+crear_persona('C',26,0)
+
+print(depurar_hijos(depurar_edades(personas)))
