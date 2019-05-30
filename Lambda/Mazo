@@ -1,0 +1,36 @@
+from functools import reduce
+
+mazo =[]
+
+def crear_carta(color, valor, pinta):
+    carta =[color, valor, pinta]
+    mazo.append(carta)
+    return carta
+
+def depurar_mazo(mazo):
+    m=list(filter(lambda x: x[0]=='Rojo', mazo))
+    return m
+
+def depurar_figuras(mazo):
+    m=list(filter(lambda x: x[1]<10 and x[1]>1, mazo))
+    return m
+
+red = 'Rojo'
+black = 'Negro'
+
+diamond ='Diamante'
+heart = 'Corazon'
+spades = 'Picas'
+clubs = 'Trebol'
+
+crear_carta(red, 1, diamond)
+crear_carta(red, 10, heart)
+crear_carta(red, 2, heart)
+crear_carta(red, 11, diamond)
+crear_carta(black, 10, spades)
+crear_carta(black, 6, clubs)
+crear_carta(black, 5, clubs)
+crear_carta(black, 8, clubs)
+crear_carta(red, 3, heart)
+
+print(reduce(lambda x,y: x[1]+y[1], depurar_figuras(depurar_mazo(mazo))))
