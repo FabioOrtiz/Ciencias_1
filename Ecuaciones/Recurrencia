@@ -10,6 +10,8 @@
 		raiz_c =[];
 		dividendos=[];
 		nuevos_coeficientes=[];
+		original_datos=0;
+		original_condiciones=0;
 		
 		function crear()
 		{
@@ -58,7 +60,7 @@
 						coeficientes_datos.push(temporal);
 					}
 				}
-			console.log(coeficientes_datos);
+			original_datos=coeficientes_datos.length;
 			return coeficientes_datos;
 		}
 		
@@ -75,15 +77,17 @@
 						condiciones.push(temporal);
 					}
 				}
-			console.log(condiciones);
-			return coeficientes_datos;
+			original_condiciones=condiciones;
+			return condiciones;
 		}
 		
 		function derivar_funcion(entrada)
 		{
+			console.log("CANTIDAD ENTRADA: "+entrada.length+" E: "+entrada)
 			multiplicador = (entrada.length)-1;
 			for(i=0;i<entrada.length;i++)
 			{
+				console.log("E: "+entrada[i]+" M: "+multiplicador+" R: "+entrada[i]* multiplicador)
 				entrada[i] = entrada[i]* multiplicador;
 				multiplicador = multiplicador-1;
 			}
@@ -154,6 +158,8 @@
 		
 		function newton_rhapson(x,y)
 		{
+			console.log("X: "+x)
+			console.log("Y: "+y)
 			numeral =0;
 			derivada =derivar_funcion(x);
 			original  = y;
@@ -257,52 +263,135 @@
 			primerValor = arreglos[0]*revalor;
 			valor=0;
 			nuevos_coeficientes.push(arreglos[0]);
+			console.log("PP: "+nuevos_coeficientes)
 			for(i=1;i<arreglos.length;i++)
 			{
 				valor = arreglos[i]+primerValor;
 				primerValor = valor*revalor;
-				console.log("NuevosC: "+valor)
 				nuevos_coeficientes.push(valor);
+			}
+			if(nuevos_coeficientes.length>3)
+			{
+				nuevos_coeficientes.pop();
 			}
 			return nuevos_coeficientes;
 		}
 		
-		function cuadratica(matrix)
+		function cuadratica1(matrix)
 		{
+			console.log("M: "+matrix)
 			a = matrix[0];
 			b = matrix[1];
 			c = matrix[2];
 			
 			x1 = (-b+ Math.sqrt(Math.pow(b, 2)-(4*a*c)))/(2*a);
+			
+			return x1;
+		}
+		
+		function cuadratica2(matrix)
+		{
+			console.log("M: "+matrix)
+			a = matrix[0];
+			b = matrix[1];
+			c = matrix[2];
+			
 			x2 = (-b- Math.sqrt(Math.pow(b, 2)-(4*a*c)))/(2*a);
 			
-			raiz_c.push(x1);
-			raiz_c.push(x2);
+			return x2;
+		}
+		
+		function raices_elevadas(raices)
+		{
+			cantidad = parseInt(original_condiciones.length/2);
+			console.log("RAICES: "+raices);
+			
+			raices_calculadas=[];
+			
+			for(i=0;i<cantidad;i++)
+			{
+				k=0;
+				for(j=0;j<cantidad;j++)
+				{
+					raices_calculadas.push(Math.pow(raices[i],original_condiciones[k]))
+					console.log("RC: "+raices_calculadas+" RI: "+raices[i]+" OR: "+original_condiciones[k])
+					k=k+2;
+				}
+			}
+			
+			console.log("RAICES: "+raices_calculadas);
+		}
+		
+		function gauss()
+		{ 
+			original_datos=original_datos-1;
+			ecuaciones=[];
+			
+			for(i=0;i<original_datos;i++)
+			{
+				ecuaciones[i]= new Array(original_datos+1).fill(0);
+				console.log(ecuaciones[i]);
+			}
+			
+			console.log("EL: "+ecuaciones.length)
+			
+			for(i=0;i<ecuaciones.length;i++)
+			{ 
+				for(j=1;j<=(ecuaciones.length+1);j++)
+				{ 
+					ecuaciones[i][j]=parseFloat(document.forms[0][4*i+j-5].value) 
+				}
+			}
+			<!--}
+			<!--for(j=1;j<=4;j++)
+			<!--{ 
+				<!--b[1][j]=a[1][j];
+				<!--b[2][j]=a[1][1]*a[2][j]-a[2][1]*a[1][j];
+				<!--b[3][j]=a[1][1]*a[3][j]-a[3][1]*a[1][j];
+				<!--c[1][j]=b[1][j];
+				<!--c[2][j]=b[2][j];
+				<!--c[3][j]=b[2][2]*b[3][j]-b[3][2]*b[2][j] 
+			<!--}
+			<!--for(i=1;i<=3;i++)
+			<!--{ 
+				<!--for(j=1;j<=4;j++)
+				<!--{ 
+					<!--document.forms[1][4*i+j-5].value=b[i][j] ;
+					<!--document.forms[2][4*i+j-5].value=c[i][j] 
+				<!--}
+			<!--}
 		}
 		
 		function real()
 		{
+			guardar_condiciones();
 			funcion = [3,-14,-15,42,40];
 			funcion1 = [3,-14,-15,42,40];
 			i = funcion.length;
-			
-			while(i>2)
+			while(i>3)
 			{
-				Raiz = newton_rhapson(funcion, funcion1, funcion2);
+				Raiz = newton_rhapson(funcion.slice(), funcion1.slice());
 				retorno = division_sintetica_1(funcion1, Raiz);
 				funcion=retorno;
 				funcion1=retorno;
-				funcion2=retorno;
 				raiz_c.push(Raiz);
+				console.log("RAICES_C: "+raiz_c)
 				i=i-1;
+				console.log("F: "+funcion)
 			}
-			
-			if (i==2)
+			if (i==3)
 			{
-				cuadratica(funcion);
+				raiz_c.push(cuadratica1(funcion));
+				raiz_c.push(cuadratica2(funcion));
 			}
 			
-			console.log("RAICES: "+raiz_c)
+			raices_elevadas([2,3]);
+		}
+		
+		function prueba()
+		{
+			guardar_coeficientes();
+			gauss();
 		}
 		
 	</script>
@@ -310,7 +399,8 @@
 		<input type="text" placeholder="Ingresar el grado de la ecuacion" id="Cantidad"></input>
 		<button onclick="constructor_funcion();">Crear</button>
 		<button onclick="guardar_funcion();">Guardar</button>
-		<button onclick="real();">Prueba</button>
+		<button onclick="real();">Real</button>
+		<button onclick="prueba();">Prueba</button>
 		<table id="variables_n"></table>
 		COEFICIENTES
 		<table id="coeficientes"></table>
