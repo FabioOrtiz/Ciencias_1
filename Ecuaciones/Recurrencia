@@ -322,95 +322,60 @@
 			return raices_calculadas;
 		}
 		
-		function gauss(arreglo_raices)
+		function gauss(arreglo_raices, arreglo_condiciones)
 		{ 
-			console.log("CANTIDAD: "+arreglo_raices.length);
-			original_datos=Math.sqrt(arreglo_raices.length);
-			console.log("OD: "+original_datos);
-			ecuaciones=[];
 			
-			for(i=0;i<original_datos;i++)
+			cantidad_datos=Math.sqrt(arreglo_raices.length);
+			
+			ecuaciones = new Array(cantidad_datos).fill(0);
+			multiplicadores=[];
+			
+			for(i=0;i<cantidad_datos;i++)
 			{
-				ecuaciones[i]= new Array(original_datos+1).fill(0);
-				console.log(ecuaciones[i]);
+				ecuaciones[i] = new Array(cantidad_datos).fill(0);
 			}
 			
-			k=0;
-			console.log("PRTA: "+ecuaciones)
-			
-			for(i=0;i<original_datos;i++)
-			{
-				for (j=0;j<original_datos;j++)
+			for(i=0;i<cantidad_datos;i++)
+			{	
+				k=i;
+				for(j=0;j<cantidad_datos;j++)
 				{
-					ecuaciones[i][j]= arreglo_raices[k];
-					k=k+4;
+					ecuaciones[i][j] = arreglo_raices[k];
+					k=k+cantidad_datos;
 				}
-				k=i+1;
 			}
 			
-			k=1
+			console.log("P: "+ecuaciones);
 			
-			console.log("or: "+original_condiciones)
-			for(i=0;i<original_datos;i++)
+			for(i=0;i<cantidad_datos;i++)
 			{
-				for (j=0;j<(original_datos+1);j++)
+				for(i=0;i<cantidad_datos;i++)
 				{
-					console.log("P: "+ecuaciones[i][j]);
-					if(ecuaciones[i][j]==0)
+					if (ecuaciones[i][i]!=1)
 					{
-						console.log("E")
-						ecuaciones[i][j]= original_condiciones[k];
-						k=k+2;
+						valor=ecuaciones[i][i]
+						multiplicadores.push(valor);
+						ecuaciones[i][i]=1;
 					}
 				}
 			}
 			
-			console.log("RTA: "+ecuaciones);
-			
-			for(i=0;i<original_datos;i++)
+			console.log("I: "+ecuaciones);
+		
+			for(i=0;i<cantidad_datos;i++)
 			{
-				if(ecuaciones[i][i]!=1)
-				{
-					temporal=ecuaciones[i][i];
-					ecuaciones[i][i]= ecuaciones[i][i]/ecuaciones[i][i];
-					
-					for(l=0;l<(original_datos+1);l++)
-					{
-						console.log("WARD")
-						if(i==l)
-						{
-							console.log("");
-						}
-						
-						else
-						{
-							ecuaciones[i][l]=ecuaciones[i][l]/temporal;
-						}
-					}
-				}
-				
-				console.log("RTA1: "+ecuaciones);
-				k=0;
-				
-				for(h=1;h<original_datos;h++)
-				{
-					k=0;
-					for(j=0;j<original_datos-1;j++)
-					{
-						console.log("I: "+i)
-						multiplicador=ecuaciones[i][i]*ecuaciones[k+1][i]*-1;
-						k=k+1;
-						console.log("VA: "+ecuaciones[h][j]);
-						ecuaciones[h][j]=parseFloat((multiplicador*ecuaciones[i][j])+ecuaciones[h][j]);
-						console.log("VCA: "+ecuaciones[h][j]);
-					}
-					console.log("RTA_U: "+ecuaciones);
-				}
+				k=i;
+				ecuaciones[i].push(arreglo_condiciones[k]);
 			}
+			
+			console.log("F: "+ecuaciones);
+			console.log("M: "+multiplicadores);
 		}
 		
 		function real()
 		{
+			
+			
 			guardar_condiciones();
 			funcion = [3,-14,-15,42,40];
 			funcion1 = [3,-14,-15,42,40];
@@ -437,8 +402,7 @@
 		
 		function prueba()
 		{
-			guardar_coeficientes();
-			gauss();
+			gauss([3,1,-1,2],[1,5]);
 		}
 		
 	</script>
