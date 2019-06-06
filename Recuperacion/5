@@ -1,0 +1,11 @@
+from functools import reduce
+
+lista =[2,10,20,33,45]
+
+def menores(arreglo):
+    cabeza=arreglo[0]
+    cabeza=pow(cabeza,5)
+    l=list(filter(lambda x: x<cabeza,arreglo))
+    return l
+
+print(menores(lista))
