@@ -1,0 +1,19 @@
+from functools import reduce
+
+listas=[]
+
+def filtrar_listas(arreglo):
+     f=list(map(lambda x: (x[0], x[-1]), arreglo))
+     return f
+
+lista1=[1]
+lista2=[2,2,3,5]
+lista3=[3,2,3]
+lista4=[4,2,3,8,9]
+
+listas.append(lista1)
+listas.append(lista2)
+listas.append(lista3)
+listas.append(lista4)
+
+print(filtrar_listas(listas))
