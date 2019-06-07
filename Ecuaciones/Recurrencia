@@ -12,7 +12,8 @@
 		nuevos_coeficientes=[];
 		original_datos=0;
 		original_condiciones=[];
-
+		segundoArreglo=[];
+		segundoArregloP=[];
 		function crear()
 		{
 			terminos=document.getElementById("Cantidad").value;
@@ -144,7 +145,7 @@
 			numeral =0;
 			derivada =derivar_funcion(x);
 			original  = y;
-			for(var i=0;i<7;i++)
+			for(var i=0;i<100;i++)
 			{
 				numeral=numeral-(calcular_valor(original,numeral)/calcular_valor(derivada,numeral));
 			}
@@ -160,24 +161,21 @@
 		function guardar_funcion()
 		{
 			primerArreglo=guardar_coeficientes();
-			segundoArreglo=guardar_coeficientes();
-			variableX=guardar_coeficientes().length;			
-			
+			variableX=primerArreglo.length;			
+			console.log("PA: "+primerArreglo)
 			while(variableX>3)
 			{
-				Raiz = newton_rhapson(primerArreglo.slice(), segundoArreglo.slice());
-				retorno = division_sintetica_1(segundoArreglo, Raiz);
+				Raiz = newton_rhapson(primerArreglo.slice(), primerArreglo.slice());
+				retorno = division_sintetica_1(primerArreglo, Raiz);
 				primerArreglo=retorno;
-				segundoArreglo=retorno;
 				raiz_c.push(Raiz);
-				i=i-1;
+				variableX=primerArreglo.length;
 			}
-			if (i==3)
+			if (variableX==3)
 			{
 				raiz_c.push(cuadratica1(primerArreglo));
-				raiz_c.push(cuadratica2(segundoArreglo));
+				raiz_c.push(cuadratica2(primerArreglo));
 			}
-			
 			return raiz_c;
 		}
 
@@ -242,14 +240,18 @@
 		function division_sintetica_1(arreglos, revalor)
 		{
 			nuevos_coeficientes=[];
+			primervalor=0;
 			primerValor = arreglos[0]*revalor;
 			valor=0;
+			arreglos[0]=parseFloat(arreglos[0])
 			nuevos_coeficientes.push(arreglos[0]);
 			for(i=1;i<arreglos.length;i++)
 			{
-				valor = arreglos[i]+primerValor;
-				primerValor = valor*revalor;
+				arreglos[i]=parseFloat(arreglos[i])
+				valor = parseFloat(arreglos[i]+primerValor);
+				primerValor = parseFloat(valor*revalor);
 				nuevos_coeficientes.push(valor);
+				
 			}
 			if(nuevos_coeficientes.length>3)
 			{
@@ -313,6 +315,7 @@
 
 		function gauss(arreglo_raices, arreglo_condiciones)
 		{ 
+			console.log("AR: "+arreglo_raices+" AC: "+arreglo_condiciones)
 			cantidad_datos=Math.sqrt(arreglo_raices.length);
 			ecuaciones = new Array(cantidad_datos).fill(0);
 			divisor=0;
@@ -377,23 +380,31 @@
 				}
 
 			}
+			console.log("ECUACIONES: "+ecuaciones)
 			return ecuaciones;
 		}
 
 	function extraer_coeficientes(arreglo_constantes)
 	{
 		constantes=[]
-		cantidad_datos=original_condiciones.length/2;
+		cantidad_datos=arreglo_constantes.length/2;
+		h=1;
 		for(f=0;f<cantidad_datos;f++)
 		{
-			constantes.push(arreglo_constantes[f][cantidad_datos]);
+			constantes.push(arreglo_constantes[h])
+			h=h+2;
 		}
 		return constantes;
 	}
 
 	function real()
 	{
-		guardar_funcion();
+		constantes_arreglo=guardar_condiciones();
+		raices_final= guardar_funcion();
+		coeficientes_finales=gauss(raices_elevadas(raices_final),extraer_coeficientes(constantes_arreglo));
+		console.log("RE: "+raices_elevadas(raices_final))
+		console.log("RAICES: "+raices_final)
+		console.log("COEFICIENTES: "+coeficientes_finales)
 	}
 
 	</script>
