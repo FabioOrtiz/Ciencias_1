@@ -149,7 +149,7 @@
 			{
 				numeral=numeral-(calcular_valor(original,numeral)/calcular_valor(derivada,numeral));
 			}
-
+			numeral=Math.round(numeral)
 			return numeral;
 		}
 
@@ -284,19 +284,45 @@
 
 		function raices_elevadas(raices)
 		{
+			console.log("AE: "+raices)
+			iterador=0;
+			condicional=0;
 			cantidad = parseInt(original_condiciones.length/2);
 
 			raices_calculadas=[];
-
+			raiz_repetida=[];
+			
+			for(y=0;y<raices.length;y++)
+			{
+				for(x=0;x<raices.length;x++)
+				{
+					console.log("Y: "+raices[y]+" X: "+raices[x])
+					if(raices[y]==raices[x])
+					{
+						iterador=iterador+1;
+					}
+					if(iterador>1 &&global!=0)
+					{
+						raiz_repetida.push(raices[y]);
+					}
+				}
+				
+				if(iterador>1 &&global==0)
+				{
+					global=global+1;
+				}
+				iterador=0;
+			}
+			
 			for(i=0;i<cantidad;i++)
 			{
-				k=0;
 				for(j=0;j<cantidad;j++)
 				{
-					raices_calculadas.push(Math.pow(raices[i],original_condiciones[k]))
+					raices_calculadas.push(Math.pow(raices[i],original_condiciones[k]));
 					k=k+2;
-				}
+				}	
 			}
+			console.log("RCC: "+raices_calculadas)
 			return raices_calculadas;
 		}
 
@@ -366,7 +392,6 @@
 					for(h=0;h<(cantidad_datos+1);h++)
 					{
 						ecuaciones[k][h]=parseFloat((ecuaciones[0][h]*multiplicador)+parseFloat(ecuaciones[k][h]));
-						console.log("DATO: "+ecuaciones[k][h]+" h,j: "+h+" "+j+" Multiplicacion: "+(ecuaciones[0][h]*multiplicador)+" SUMA: "+ecuaciones[k][h])
 					}
 				}
 
@@ -403,14 +428,7 @@
 		constantes_finales=[]
 		for(f=0;f<gauss_resultado.length;f++)
 		{
-			for(g=0;g<gauss_resultado[f].length;g++)
-			{
-				if(gauss_resultado[f][g]!=0 && gauss_resultado[f][g]!=1)
-				{
-					constantes_finales.push(gauss_resultado[f][g]);
-					console.log("Agregado: "+gauss_resultado[f][g])
-				}
-			}
+			constantes_finales.push(gauss_resultado[f][(gauss_resultado[f].length-1)]);
 		}
 		return constantes_finales;
 	}
@@ -421,6 +439,7 @@
 		raices_final= guardar_funcion();
 		coeficientes_finales=gauss(raices_elevadas(raices_final),extraer_coeficientes(constantes_arreglo));
 		constantes_ultimas = extraer_constantes(coeficientes_finales);
+		console.log("FC: "+constantes_ultimas)
 		document.getElementById("resultado_final").innerHTML = "RAICES: "+raices_final+"<br>"+"COEFICIENTES: "+constantes_ultimas;
 	}
 
