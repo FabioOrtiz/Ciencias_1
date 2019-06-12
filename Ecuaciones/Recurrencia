@@ -145,12 +145,20 @@
 			numeral =0;
 			derivada =derivar_funcion(x);
 			original  = y;
+			alert="RAICES COMPLEJAS"
 			for(var i=0;i<100;i++)
 			{
 				numeral=numeral-(calcular_valor(original,numeral)/calcular_valor(derivada,numeral));
 			}
 			numeral=Math.round(numeral)
-			return numeral;
+			if(typeof(numeral)=='number')
+			{
+				return numeral;
+			}
+			else
+			{
+				return alert;
+			}
 		}
 
 		function constructor_funcion()
@@ -161,20 +169,41 @@
 		function guardar_funcion()
 		{
 			primerArreglo=guardar_coeficientes();
-			variableX=primerArreglo.length;			
+			variableX=primerArreglo.length;
+			comparacion="";
 			console.log("PA: "+primerArreglo)
 			while(variableX>3)
 			{
 				Raiz = newton_rhapson(primerArreglo.slice(), primerArreglo.slice());
-				retorno = division_sintetica_1(primerArreglo, Raiz);
-				primerArreglo=retorno;
-				raiz_c.push(Raiz);
-				variableX=primerArreglo.length;
+				if(typeof(Raiz)=='number')
+				{
+					retorno = division_sintetica_1(primerArreglo, Raiz);
+					primerArreglo=retorno;
+					raiz_c.push(Raiz);
+					variableX=primerArreglo.length;
+				}
+				else{
+					reescribir();	
+					break;
+				}
 			}
 			if (variableX==3)
 			{
-				raiz_c.push(cuadratica1(primerArreglo));
-				raiz_c.push(cuadratica2(primerArreglo));
+				valor1=cuadratica1(primerArreglo)
+				valor2=cuadratica2(primerArreglo)
+				comparacion=valor1;
+				console.log("CC: "+comparacion+" TCC: "+typeof(comparacion))
+				comparacion=comparacion.toString()
+				if(comparacion=='NaN')
+				{	
+					console.log("ANYTHING")
+					reescribir();
+				}
+				else
+				{
+					raiz_c.push(valor1);
+					raiz_c.push(valor2);
+				}
 			}
 			return raiz_c;
 		}
@@ -262,24 +291,42 @@
 
 		function cuadratica1(matrix)
 		{
+			alert="ALERTA"
 			a = matrix[0];
 			b = matrix[1];
 			c = matrix[2];
 
 			x1 = (-b+ Math.sqrt(Math.pow(b, 2)-(4*a*c)))/(2*a);
 
-			return x1;
+			if(typeof(x1)=='number')
+			{
+				return x1;
+			}
+			
+			else
+			{
+				return alert;
+			}
 		}
 
 		function cuadratica2(matrix)
 		{
+			alert="ALERTA"
 			a = matrix[0];
 			b = matrix[1];
 			c = matrix[2];
 
 			x2 = (-b- Math.sqrt(Math.pow(b, 2)-(4*a*c)))/(2*a);
-
-			return x2;
+			
+			if(typeof(x2)=='number')
+			{
+				return x2;
+			}
+			
+			else
+			{
+				return alert;
+			}
 		}
 
 		function raices_elevadas(raices)
@@ -291,28 +338,33 @@
 
 			raices_calculadas=[];
 			raiz_repetida=[];
-			
+			k=0;
 			for(y=0;y<raices.length;y++)
 			{
 				for(x=0;x<raices.length;x++)
 				{
-					console.log("Y: "+raices[y]+" X: "+raices[x])
 					if(raices[y]==raices[x])
 					{
 						iterador=iterador+1;
 					}
-					if(iterador>1 &&global!=0)
-					{
-						raiz_repetida.push(raices[y]);
-					}
 				}
 				
-				if(iterador>1 &&global==0)
+				console.log("C: "+condicional)
+				if(iterador>1 & condicional==1)
 				{
-					global=global+1;
+					condicional=0;
+					raiz_repetida.push(raices[y]);
 				}
+				
+				else if(iterador>1 & condicional==0)
+				{
+					condicional=1;
+				}
+				
 				iterador=0;
 			}
+			
+			console.log("RR: "+raiz_repetida)
 			
 			for(i=0;i<cantidad;i++)
 			{
@@ -320,12 +372,43 @@
 				{
 					raices_calculadas.push(Math.pow(raices[i],original_condiciones[k]));
 					k=k+2;
-				}	
+				}
+				k=0;
 			}
+			
+			for(lqs=0;lqs<raiz_repetida.length;lqs++)
+			{
+				recorrido=0;
+				condicion=0;
+				for(variableNueva=0;variableNueva<Math.sqrt(raices_calculadas.length);variableNueva++)
+				{
+					if(raiz_repetida[lqs]==raices_calculadas[recorrido] && (condicion==0))
+					{
+						movilidad=recorrido;
+						for(calculo=0;calculo<Math.sqrt(raices_calculadas.length);calculo++)
+						{
+							console.log("P1: "+raices_calculadas[movilidad]+" OC: "+original_condiciones[k]+" M: "+raices_calculadas[movilidad]*original_condiciones[k])
+							raices_calculadas[movilidad]=raices_calculadas[movilidad]*original_condiciones[k];
+							movilidad=movilidad+1;
+							k=k+2;
+						}
+						k=0;
+						condicion=1;
+					}
+					recorrido=recorrido+Math.sqrt(raices_calculadas.length);
+				}
+			}
+			
 			console.log("RCC: "+raices_calculadas)
 			return raices_calculadas;
 		}
 
+		function reescribir()
+		{
+			document.write("NO HAY RAICES EN LOS REALES");
+		}
+		
+		
 		function devolver_condiciones()
 		{
 			resultados_coeficientes=[];
@@ -390,7 +473,8 @@
 					}
 
 					for(h=0;h<(cantidad_datos+1);h++)
-					{
+					{	
+						console.log("DD: "+ecuaciones[k][h])
 						ecuaciones[k][h]=parseFloat((ecuaciones[0][h]*multiplicador)+parseFloat(ecuaciones[k][h]));
 					}
 				}
