@@ -1,0 +1,106 @@
+<html>
+	<script>
+		inorden=[];
+		posorden=[];
+		derecha_valor=[];
+		izquierda_valor=[];
+		
+		function guardar_inorden()
+		{
+			terminos=document.getElementById("Inorden").value;
+			
+			for(i=0;i<terminos.length;i++)
+			{
+				inorden.push(terminos.charAt(i));
+			}
+			return inorden;
+		}
+		
+		function guardar_posorden()
+		{
+			terminos=document.getElementById("Posorden").value;
+			
+			for(i=0;i<terminos.length;i++)
+			{
+				posorden.push(terminos.charAt(i));
+			}
+			return posorden;
+		}
+		
+		function ordenar_arreglos(inor, posor)
+		{
+			valor=posor.length;
+			derecha_valor=inor;
+			izquierda_valor=inor;
+			pos_evaluado=posor;
+			
+			
+		}
+		
+		function derecha(arreglo, poserr)
+		{	
+			raizp=poserr[poserr.length-1];
+			derecha=[];
+			centro = arreglo.indexOf(raizp);
+			
+			for(i=(centro+1);i<arreglo.length;i++)
+			{
+				derecha.push(arreglo[i])
+			}
+			
+			return derecha;
+		}
+		
+		function izquierda(arreglo, poserr)
+		{	
+			raizp=poserr[poserr.length-1];
+			izquierda=[];
+			centro = arreglo.indexOf(raizp);
+			
+			for(i=0;i<centro;i++)
+			{
+				izquierda.push(arreglo[i])
+			}
+			
+			return izquierda;
+		}
+		
+		function descontar(nuevos_datos, poser)
+		{
+			datoseliminados=[]
+			poser.pop();
+			cantidad=poser.length;
+			console.log("P: "+poser)
+			for(i=0;i<cantidad;i++)
+			{
+				if(nuevos_datos.indexOf(poser[i])>-1)
+				{
+					
+				}
+				else
+				{
+					datoseliminados.push(poser[i]);
+				}
+			}
+			
+			console.log("DE: "+datoseliminados)
+			
+			for(i=0;i<datoseliminados.length;i++)
+			{
+				poser.splice(poser.indexOf(datoseliminados[i]),1);
+			}
+			
+			return poser;
+		}
+		
+		function real()
+		{
+			ordenar_arreglos(guardar_inorden(), guardar_posorden());
+		}
+	</script>
+	<body>
+	<input type="text" placeholder="Ingresar Inorden" id="Inorden"></input>
+	<input type="text" placeholder="Ingresar Posorden" id="Posorden"></input>
+	<button onclick="real();">Calcular</button>
+	</body>
+</html>
