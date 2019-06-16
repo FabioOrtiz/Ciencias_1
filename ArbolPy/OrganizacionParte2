@@ -1,0 +1,170 @@
+<html>
+	<script>
+		inorden=[];
+		posorden=[];
+		preorden=[];
+		derecha_valor=[];
+		izquierda_valor=[];
+		
+		function guardar_inorden()
+		{
+			terminos=document.getElementById("Inorden").value;
+			
+			for(i=0;i<terminos.length;i++)
+			{
+				inorden.push(terminos.charAt(i));
+			}
+			return inorden;
+		}
+		
+		function guardar_preorden()
+		{
+			terminos=document.getElementById("Preorden").value;
+			
+			for(i=0;i<terminos.length;i++)
+			{
+				preorden.push(terminos.charAt(i));
+			}
+			return preorden;
+		}
+		
+		function guardar_posorden()
+		{
+			terminos=document.getElementById("Posorden").value;
+			
+			for(i=0;i<terminos.length;i++)
+			{
+				posorden.push(terminos.charAt(i));
+			}
+			return posorden;
+		}
+		
+		function crear_tablaPreorden(arriba, izquierda)
+		{
+			var tabla= document.getElementById("TablaMatriz");
+			k=0;
+			superiores=[];
+			izquierdos=[];
+			ValorX="X";
+			
+			for(i=0;i<(arriba.length+1);i++)
+			{
+				var fila=tabla.insertRow(-1);
+				for(j=0;j<(arriba.length+1);j++)
+				{
+					var posicion= ""+i+j;
+					var celda_individual=fila.insertCell(-1);
+					
+					if(i==0 && j!=0)
+					{
+						superiores.push(arriba[j-1]);
+					}					
+					
+					else
+					{
+						if(j==0 && i!=0)
+						{
+							k=k+1;
+							izquierdos.push(izquierda[k-1]);
+						}
+						else
+						{
+							if(izquierdos[i-1]==superiores[j-1] && i!=0)
+							{
+								var CELDA= izquierdos[i-1];
+								celda_individual.innerHTML=CELDA;
+							}
+							else
+							{
+								if(i==0 && j==0)
+								{
+								
+								}
+								else
+								{
+									var  CELDA="<input type=\"text\"";
+									CELDA=CELDA+"id=\""+posicion+"\"";
+									CELDA=CELDA+"size=\"5\">";
+									celda_individual.innerHTML=CELDA;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		function crear_tablaPostorden(arriba, izquierda)
+		{
+			var tabla= document.getElementById("TablaMatriz");
+			k=izquierda.length;
+			superiores=[];
+			izquierdos=[];
+			ValorX="X";
+			
+			for(i=0;i<(arriba.length+1);i++)
+			{
+				var fila=tabla.insertRow(-1);
+				for(j=0;j<(arriba.length+1);j++)
+				{
+					var posicion= ""+i+j;
+					var celda_individual=fila.insertCell(-1);
+					
+					if(i==0 && j!=0)
+					{
+						superiores.push(arriba[j-1]);
+					}					
+					
+					else
+					{
+						if(j==0 && i!=0)
+						{
+							k=k-1;
+							izquierdos.push(izquierda[k]);
+						}
+						else
+						{
+							if(izquierdos[i-1]==superiores[j-1] && i!=0)
+							{
+								var CELDA= izquierdos[i-1];
+								celda_individual.innerHTML=CELDA;
+							}
+							else
+							{
+								if(i==0 && j==0)
+								{
+								
+								}
+								else
+								{
+									var  CELDA="<input type=\"text\"";
+									CELDA=CELDA+"id=\""+posicion+"\"";
+									CELDA=CELDA+"size=\"5\">";
+									celda_individual.innerHTML=CELDA;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		function InPre()
+		{
+			crear_tablaPreorden(guardar_inorden(), guardar_preorden());
+		}
+		
+		function InPos()
+		{
+			crear_tablaPostorden(guardar_inorden(), guardar_posorden());
+		}
+	</script>
+	<body>
+	<input type="text" placeholder="Ingresar Inorden" id="Inorden"></input>
+	<input type="text" placeholder="Ingresar Preorden" id="Preorden"></input>
+	<input type="text" placeholder="Ingresar Posorden" id="Posorden"></input>
+	<button onclick="InPre();">Calcular con Inorden y Preorden</button>
+	<button onclick="InPos();">Calcular con Inorden y Posorden</button>
+	</body>
+	<table id="TablaMatriz"></table>
+</html>
