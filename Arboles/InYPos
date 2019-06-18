@@ -33,8 +33,16 @@
 			derecha_valor=inor;
 			izquierda_valor=inor;
 			pos_evaluado=posor;
+			finales=[];
 			
-			
+			for(i=0;i<posor.length)
+			{
+				derecha_valor=(derecha_valor,descontar(derecha_valor,posor));
+				izquierda_valor=(izquierda_valor,descontar(izquierda_valor,posor));
+				finales.push(derecha_valor);
+				finales.push(izquierda_valor);
+			}
+			return finales;
 		}
 		
 		function derecha(arreglo, poserr)
