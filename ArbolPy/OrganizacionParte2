@@ -5,6 +5,7 @@
 		preorden=[];
 		derecha_valor=[];
 		izquierda_valor=[];
+		posiciones=[];
 		
 		function guardar_inorden()
 		{
@@ -72,6 +73,8 @@
 							if(izquierdos[i-1]==superiores[j-1] && i!=0)
 							{
 								var CELDA= izquierdos[i-1];
+								posiciones.push(izquierdos[i-1]);
+								posiciones.push(posicion);
 								celda_individual.innerHTML=CELDA;
 							}
 							else
@@ -127,6 +130,8 @@
 							if(izquierdos[i-1]==superiores[j-1] && i!=0)
 							{
 								var CELDA= izquierdos[i-1];
+								posiciones.push(izquierdos[i-1]);
+								posiciones.push(posicion);
 								celda_individual.innerHTML=CELDA;
 							}
 							else
@@ -149,14 +154,116 @@
 			}
 		}
 		
+		function dibujar(arreglo_posicional)
+		{
+			var c = document.getElementById("myCanvas");
+			var ctx = c.getContext("2d");
+			ctx.font = "10px Arial";
+			cantidad=(arreglo_posicional.length/2);
+			k=0;
+			nuevas_posiciones=[];
+			tupla=[];
+			for(i=0;i<cantidad;i++)
+			{
+				valorX=arreglo_posicional[k+1]/10;
+				valorX=Math.trunc(valorX)*10;
+				valorY=arreglo_posicional[k+1]%10;
+				valorY=valorY*10;
+				tupla.push(valorX);
+				tupla.push(valorY);
+				nuevas_posiciones.push(tupla);
+				ctx.strokeText(" "+arreglo_posicional[k]+"",valorY,valorX);
+				k=k+2;
+			}
+			k=0;
+			console.log(nuevas_posiciones);
+			ctx.font = "2px Arial";
+			c=1;
+			repeticion=0;
+			
+			for(i=0;i<cantidad;i++)
+			{
+				temporal=c;
+				condicionMayor=0;
+				condicionMenor=0;
+				
+				if(nuevas_posiciones[0][1]==10 || nuevas_posiciones[0][1]==(cantidad*10))
+				{
+					repeticion=1;
+				}
+				while(repeticion!=2)
+				{
+					if(temporal>cantidad*2)
+					{
+						break;
+					}
+					if(nuevas_posiciones[0][c]>nuevas_posiciones[0][temporal+2] && condicionMenor==0)
+					{						
+						V1=nuevas_posiciones[0][c-1];
+						V2=nuevas_posiciones[0][c];
+						X=nuevas_posiciones[0][temporal+1];
+						Y=nuevas_posiciones[0][temporal+2];
+						
+						console.log("V1: "+V1+" V2: "+V2+" X: "+X+" Y: "+Y);
+						ctx.moveTo(V1, V2);
+						ctx.lineTo(X, Y);
+						ctx.stroke();
+						condicionMenor=1;
+						repeticion=repeticion+1;	
+					}
+					
+					if(nuevas_posiciones[0][c]<nuevas_posiciones[0][temporal+2] && condicionMayor==0)
+					{
+						if(c==1)
+						{
+							V1=nuevas_posiciones[0][c-1];
+							V2=nuevas_posiciones[0][c];
+							X=nuevas_posiciones[0][temporal+1];
+							Y=nuevas_posiciones[0][temporal+2];
+							console.log("V1: "+V1+" V2: "+V2+" X: "+X+" Y: "+Y);
+							ctx.moveTo(V2+3, V1);
+							ctx.lineTo(Y+3, X-5);
+							ctx.stroke();
+							condicionMayor=1;
+							repeticion=repeticion+1;
+						}
+						
+						if(nuevas_posiciones[0][c]<nuevas_posiciones[0][c-2])
+						{
+							if(nuevas_posiciones[0][temporal+2]<nuevas_posiciones[0][c-2])
+							{
+								V1=nuevas_posiciones[0][c-1];
+								V2=nuevas_posiciones[0][c];
+								X=nuevas_posiciones[0][temporal+1];
+								Y=nuevas_posiciones[0][temporal+2];
+								console.log("V1: "+V1+" V2: "+V2+" X: "+X+" Y: "+Y);
+								ctx.moveTo(V2+3, V1);
+								ctx.lineTo(Y+3, X-5);
+								ctx.stroke();
+								condicionMayor=1;
+								repeticion=repeticion+1;
+							}
+						}
+					}
+					temporal=temporal+2;
+				}
+				repeticion=0;
+				c=c+2;
+			}
+		}
+		
 		function InPre()
 		{
 			crear_tablaPreorden(guardar_inorden(), guardar_preorden());
+			console.log("AR: "+posiciones);
+			dibujar(posiciones);
 		}
 		
 		function InPos()
 		{
 			crear_tablaPostorden(guardar_inorden(), guardar_posorden());
+			console.log("AR: "+posiciones);
+			dibujar(posiciones);
 		}
 	</script>
 	<body>
@@ -167,4 +274,5 @@
 	<button onclick="InPos();">Calcular con Inorden y Posorden</button>
 	</body>
 	<table id="TablaMatriz"></table>
+	<canvas id="myCanvas" width="200" height="100" style="border:1px solid #d3d3d3;"></canvas>
 </html>
