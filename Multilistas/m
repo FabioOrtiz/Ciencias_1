@@ -1,0 +1,474 @@
+<html>
+<head>
+	<title>Multilistas</title>
+	<script>
+		var m;
+		function init(){
+			//BOTONES
+			 var btnCrearMultilista = document.getElementById("btnCrearMultilista");
+			 var btnListar = document.getElementById("btnListar");
+			 var btnInsertarPropietario = document.getElementById("btnInsertarPropietario");
+			 var btnInsertarInmueblePropietario = document.getElementById("btnInsertarInmueblePropietario");
+			 var btnRetirarPropietario = document.getElementById("btnRetirarPropietario");
+			 var btnRetirarInmueblePropietario = document.getElementById("btnRetirarInmueblePropietario");
+			 //ENTRADAS
+			 var nomMultilista = document.getElementById("multilista");
+			 var idPropietarioNuevo = document.getElementById("idPropietarioNuevo");
+			 var nomPropietarioNuevo = document.getElementById("nomPropietarioNuevo");
+			 var idPropietario = document.getElementById("idPropietario");
+			 var idInmuebleNuevoPropietario = document.getElementById("idInmuebleNuevoPropietario");
+			 var dirInmuebleNuevoPropietario = document.getElementById("dirInmuebleNuevoPropietario");
+			 var valInmuebleNuevoPropietario = document.getElementById("valInmuebleNuevoPropietario");
+			 var idRetiroPropietario = document.getElementById("idRetiroPropietario");
+			 var idRetiroInmueblePropietario = document.getElementById("idRetiroInmueblePropietario");
+			 var idInmuebleRetirarPropietario = document.getElementById("idInmuebleRetirarPropietario");
+			 //CANVAS
+			 var can = document.getElementById("lienzo");
+			 
+			 btnCrearMultilista.onclick = function(){
+				 if(isNaN(nomMultilista.value)==true && nomMultilista.value!=''){
+					if(m == null){
+						m = new Multilista(nomMultilista.value);
+						}else if(m.existeLista(nomMultilista.value)){
+							alert("YA EXISTE MULTILISTA");
+						}else{
+							m.crearLista(nomMultilista.value);
+						}	
+					}else{
+					alert("Insertar dar");
+				}
+			 }
+			 
+			 btnListar.onclick = function(){
+				 if(m != null){
+					 if(m.existeLista(nomMultilista.value)){
+						 m.dibujar(can);
+					 }else{
+						 alert("La multilista no existe");
+					 }
+				 }else{
+					 alert("La multilista no existe");
+				 }
+			 }
+			 btnInsertarPropietario.onclick = function(){
+				 if(isNaN(idPropietarioNuevo.value)==false && idPropietarioNuevo.value!='' &&
+					isNaN(nomPropietarioNuevo.value)==true && nomPropietarioNuevo.value!=''){
+						if(m != null){
+							var id = parseInt(idPropietarioNuevo.value);
+							if(m.existeLista(nomMultilista.value)){
+							m.insertarPropietario(id,nomPropietarioNuevo.value);
+							}else{
+							alert("La multilista no existe");
+							}	
+						}else{
+							alert("La multilista no existe");
+						}
+				 
+				 }else{
+					 alert("Inserte datos correctamente");
+				 }
+			 }
+			 btnInsertarInmueblePropietario.onclick = function(){
+				 if(isNaN(idInmuebleNuevoPropietario.value)==false && idInmuebleNuevoPropietario.value!='' &&
+					isNaN(idPropietario.value)==false && idPropietario.value!='' &&
+					isNaN(dirInmuebleNuevoPropietario.value)==true && dirInmuebleNuevoPropietario.value!='' &&
+					isNaN(valInmuebleNuevoPropietario.value)==false && valInmuebleNuevoPropietario.value!=''){
+						if(m != null){
+							var idI = parseInt(idInmuebleNuevoPropietario.value);
+							var idP = parseInt(idPropietario.value);
+							if(m.existeLista(nomMultilista.value)){
+							m.insertarInmueble(idP, idI,
+												dirInmuebleNuevoPropietario.value, valInmuebleNuevoPropietario.value);
+							}else{
+							alert("La multilista no existe");
+							}	
+						}else{
+							alert("La multilista no existe");
+						}
+				 
+				 }else{
+					 alert("Inserte datos correctamente");
+				 }
+			 }
+			 btnRetirarPropietario.onclick = function(){
+				 if(isNaN(idRetiroPropietario.value)==false && idRetiroPropietario.value!=''){
+						if(m != null){
+							if(m.existeLista(nomMultilista.value)){
+							var idR = parseInt(idRetiroPropietario.value);
+							m.retirarPropietario(idR);
+							}else{
+							alert("La multilista no existe");
+							}	
+						}else{
+							alert("La multilista no existe");
+						}
+				 
+				 }else{
+					 alert("Inserte datos correctamente");
+				 }
+			 }
+			 btnRetirarInmueblePropietario.onclick = function(){
+				 if(isNaN(idRetiroInmueblePropietario.value)==false && idRetiroInmueblePropietario.value!='' &&
+					isNaN(idInmuebleRetirarPropietario.value)==false && idInmuebleRetirarPropietario.value!=''){
+						if(m != null){
+							if(m.existeLista(nomMultilista.value)){
+							var idRi = parseInt(idRetiroInmueblePropietario.value);
+							var idRP = parseInt(idInmuebleRetirarPropietario.value);
+							m.retirarInmueble(idRi, idRP);
+							}else{
+							alert("La multilista no existe");
+							}	
+						}else{
+							alert("La multilista no existe");
+						}
+				 
+				 }else{
+					 alert("Inserte datos correctamente");
+				 }
+			 }
+		}
+		class Lista{
+			constructor(nombre){
+				this.nombre = nombre;
+				this.cabeza=null;
+			}
+			insertarInmueble(idP,idI,dirI,valI){
+				var q = this.cabeza;
+				console.log("q.idP: "+idP+" - id: "+q.id);
+				while(q!=null){
+					if(q.id==idP){
+						q.insertarInmueble(idI,dirI,valI);
+						return true;
+					}
+					q=q.numSig;
+				}
+				alert("Propietario no existe");
+				return false;
+			}
+			
+			insertarPropietario(id,nom){
+				var q=null;
+				var s = this.cabeza;
+				
+				while(s!=null && id>=s.id){
+					if(s.id==id){
+						alert("El codigo del Propietario ya existe");
+						return false;
+					}
+					q=s;
+					s=s.numSig;
+				}
+				
+				var n = new NodoNum(id,nom);
+				
+				if(q==null){
+					n.numSig=this.cabeza;
+					this.cabeza=n;
+				}else if(s==null){
+					q.numSig=n;
+				}else{
+					n.numSig=s;
+					q.numSig=n;
+				}
+				return true;
+			}
+			retirarInmueble(idP,idI){
+				var q = this.cabeza;
+				console.log("q.idP: "+idP+" - idI: "+idI);
+				while(q!=null){
+					if(q.id==idP){
+						q.retirarInmueble(idI);
+					}
+					q=q.numSig;
+				}
+			}
+			retirarPropietario(id){
+				if(this.buscarPropietario(id)==false){
+					alert("El propietario no existe");
+					return false;
+				}
+				var aux = null;
+				var q = null;
+				var s = this.cabeza;
+				while(s!=null && s.id<=id){
+					aux=q;
+					q=s;
+					s=s.numSig;
+				}
+				if(q.numAbajo!=null){
+					alert("El propietario no se puede retirar ya que tiene inmuebles");
+					return false;
+				}
+				if(aux==null){
+					this.cabeza=s;
+				}else if(s==null){
+					aux.numSig=null;
+				}else{
+					aux.numSig=s;
+				}
+				alert("Propietario retirado exitosamente");
+			}
+			buscarInmueble(idp,idI){
+				var q = this.cabeza;
+				while(q!=null){
+					if(q.id==idp){
+						q.buscarInmueble(idI);
+						return true;
+					}
+					q=q.numSig;
+				}
+				console.log("No existe el numero en la lista");
+				return false;
+			}
+			buscarPropietario(id){
+				var q = this.cabeza;
+				console.log("q.info: "+q.info+" - id: "+id);
+				while(q!=null){
+					if(q.id==id){
+						console.log("Existe el numero en la lista");
+						return true;
+					}
+					q=q.numSig;
+				}
+				console.log("No existe el numero en la lista");
+				return false;
+			}
+			dibujar(can){
+				var q = this.cabeza;
+				var r, persona, codigo;
+				var ctx = can.getContext("2d");
+				ctx.clearRect(0, 0, can.width, can.height);
+				var i=20;
+				var j=20;
+				while(q!=null){
+					ctx.beginPath();
+					ctx.lineWidth = "3";
+					ctx.rect(i, j, 140, 30);
+					if(q.numAbajo!=null){
+						var aux = j;
+						console.log("Entro a dibujar inmuebles");
+						r = q.numAbajo;
+						while(r!=null){
+							codigo = "Id: "+r.id+" | "+" Dir: "+r.dir+" | "+"Val: $"+r.val;
+							ctx.moveTo(i+45,j+30);
+							ctx.lineTo(i+45,j+50);
+							ctx.font = "11px Arial";
+							ctx.fillText(codigo, i+9, j+66);
+							ctx.strokeStyle = "black";
+							ctx.rect(i, j+50, 140, 30);
+							r = r.numAbajo;
+							j+=40;
+						}
+						j = aux;
+					}
+					if(q.numSig!=null){
+						ctx.moveTo(i+140,j+16);
+						ctx.lineTo(i+200,j+16);	
+					}
+					ctx.strokeStyle = "blue";
+					persona = "Codigo: "+q.id+" Nombre: "+q.nom;
+					ctx.font = "12px Arial";
+					ctx.fillText(persona, i+8, j+20);
+					ctx.stroke();
+					i+=200;
+					q=q.numSig;
+				}
+			}
+		}
+		class NodoNum{
+			constructor(id,nom){
+				this.id = id;
+				this.nom = nom;
+				this.numSig = null;
+				this.numAbajo = null;
+			}
+			
+			insertarInmueble(id,dir,val){
+				var q=null;
+				var s = this.numAbajo;
+				
+				while(s!=null && id>=s.id){
+					if(s.id==id){
+						alert("El codigo del inmueble ya existe");
+						return false;
+					}
+					q=s;
+					s=s.numAbajo;
+				}
+				
+				var n = new NodoN(id,dir,val);
+				
+				if(q==null){
+					n.numAbajo=this.numAbajo;
+					this.numAbajo=n;
+					console.log("Entro al primer IF");
+				}else if(s==null){
+					q.numAbajo=n;
+					console.log("Entro al segundo IF");
+				}else{
+					n.numAbajo=s;
+					q.numAbajo=n;
+					console.log("Entro al ELSE");
+				}
+				alert("Mueble insertado satisfactoriamente");
+				return true;
+			}
+			
+			buscarInmueble(id){
+				try{
+				var q = this.numAbajo;
+				console.log("q.info: "+q.info+" - id: "+id);
+				while(q!=null){
+					if(q.id==id){
+						console.log("Encontré el inmueble ");
+						return true;
+					}
+					q=q.numAbajo;
+				}
+				console.log("No existe el numero en la lista");
+				}catch(error){
+				}
+				return false;
+			}
+			
+			retirarInmueble(id){
+				if(this.buscarInmueble(id)==false){
+					alert("El Inmueble no existe");
+					return false;
+				}
+				var aux = null;
+				var q = null;
+				var s = this.numAbajo;
+				while(s!=null && s.id<=id){
+					aux=q;
+					q=s;
+					s=s.numAbajo;
+				}
+				if(aux==null){
+					this.numAbajo=s;
+					console.log("Entro al primer IF");
+				}else if(s==null){
+					aux.numAbajo=null;
+					console.log("Entro al segundo IF");
+				}else{
+					aux.numAbajo=s;
+					console.log("Entro al ELSE");
+				}
+				alert("Retiro del inmueble exitoso");
+				return true;
+			}
+		}
+
+		class NodoN{
+			constructor(id,dir,val){
+				this.id = id;
+				this.dir = dir;
+				this.val = val;
+				this.numAbajo = null;
+			}
+			
+		}
+		class Multilista{
+			constructor(nom){
+				this.indice = 0;
+				this.cont = 0;
+				this.lista = [];
+				this.lista[this.cont] = new Lista(nom);
+			}
+			
+			crearLista(nom){
+				this.cont++;
+				this.lista[this.cont] = new Lista(nom);
+			}
+			
+			existeLista(nom){
+				try{
+				for(var i=0;i<this.lista.length;i++){
+					if (this.lista[i].nombre == nom){
+						this.indice = i;
+						return true;
+					}
+				}
+				}catch(error){
+					console.log("No hay ninguna multilista agregada");
+				}
+				return false;
+			}
+			
+			insertarPropietario(id,nom){
+				this.lista[this.indice].insertarPropietario(id,nom);
+			}
+			
+			insertarInmueble(idP,idI,dirI,valI){
+				this.lista[this.indice].insertarInmueble(idP,idI,dirI,valI);
+			}
+			
+			retirarPropietario(id){
+				this.lista[this.indice].retirarPropietario(id);
+			}
+			
+			retirarInmueble(idP,idI){
+				this.lista[this.indice].retirarInmueble(idP,idI);
+			}
+			
+			dibujar(can){
+			this.lista[this.indice].dibujar(can);
+			}
+		}
+	</script>
+</head>
+<body onload="init();">	
+	<div>
+		<h1>Multilistas</h1>
+		<P>Nombre de la multilista:</P>
+		<input id="multilista" type="text"/> 
+		<button id="btnCrearMultilista">Crear Multilista</button>
+		<br><br>
+		<br>
+		<h3>Ingreso de un Propietario</h3>
+		<P>Codigo del nuevo propietario</P>
+		<input class="id" id="idPropietarioNuevo" type="text"/>
+		<P>Nombre del nuevo propietario</P>
+		<input id="nomPropietarioNuevo" type="text"/> 
+		<button id="btnInsertarPropietario">Insertar propietario</button>
+		<br>
+		
+		<h3>Ingreso de un inmueble a un propietario</h3>
+		<P>Codigo del propietario</P>
+		<input class="id" id="idPropietario" type="text"/>
+		<br>
+		<P>Codigo del inmueble para el propietario</P>
+		<input class="id" id="idInmuebleNuevoPropietario" type="text"/>
+		<P>Direccion del inmueble para el propietario</P>
+		<input id="dirInmuebleNuevoPropietario" type="text"/>
+		<P>Valor del inmueble para el propietario</P>
+		<input class="id" id="valInmuebleNuevoPropietario" type="text"/>
+		<button id="btnInsertarInmueblePropietario">Insertar inmueble</button>
+		<br>
+		
+		<h3>Retiro de un propietario</h3>
+		<P>Ingrese codigo del propietario</P>
+		<input class="id" id="idRetiroPropietario" type="text"/> 
+		<button id="btnRetirarPropietario">Retirar propietario</button>
+		
+		<h3>Retiro de un inmueble de propietario</h3>
+		<P>Ingrese codigo del propietario</P>
+		<input class="id" id="idRetiroInmueblePropietario" type="text"/> 
+		<P>Ingrese codigo del inmbueble del propietario a retirar</P>
+		<input class="id" id="idInmuebleRetirarPropietario" type="text"/>
+		<button id="btnRetirarInmueblePropietario">Retirar Inmueble</button>
+		<br>
+		<br>
+		<br><br>
+		
+		<button id="btnListar">Listar multilista</button>
+		<br><br>
+		<div id="divcan">
+		<canvas id="lienzo" width="1800"; height="400">
+		</canvas>
+		</div>
+		
+	</div>
+	
+</body>
+</html>
