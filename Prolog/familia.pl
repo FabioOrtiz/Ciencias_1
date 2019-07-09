@@ -47,6 +47,7 @@ padrede(maria,gloria).
 
 hermanode(X,Y):- padrede(C,X),  padrede(C,Y), X\==Y.
 conyugede(X,Y):- padrede(X,A), padrede(Y,A), X\==Y.
+feliz(A) :- conyugede(A,X).
 tiode(A,B):- padrede(C,B),hermanode(C,A).
 primode(A,B):- tiode(C,A), hijode(B,C).
 hijode(A,B) :- padrede(B,A).
